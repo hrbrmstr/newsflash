@@ -1,0 +1,23 @@
+Package: newsflash
+Type: Package
+Title: Tools to Work with the Internet Archive and GDELT Television Explorer
+Version: 0.1.0
+Date: 2017-01-25
+Author: Bob Rudis (bob@@rud.is)
+Maintainer: Bob Rudis <bob@rud.is>
+Description: Tools to Work with the Internet Archive and GDELT Television
+    Explorer
+URL: https://github.com/hrbrmstr/newsflash
+BugReports: https://github.com/hrbrmstr/newsflash/issues
+License: AGPL
+Suggests:
+    testthat
+Depends:
+    R (>= 3.2.0)
+Imports:
+    httr,
+    jsonlite,
+    dplyr,
+    tidyr,
+    anytime
+RoxygenNote: 5.0.1

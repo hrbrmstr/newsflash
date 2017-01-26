@@ -1,0 +1,86 @@
+---
+output: rmarkdown::github_document
+---
+
+`newsflash` : Tools to Work with the Internet Archive and GDELT Television Explorer
+
+Ref: <http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch>
+
+>_"In collaboration with the Internet Archive's Television News Archive, GDELT's Television Explorer allows you to keyword search the closed captioning streams of the Archive's 6 years of American television news and explore macro-level trends in how America's television news is shaping the conversation around key societal issues. Unlike the Archive's primary Television News interface, which returns results at the level of an hour or half-hour "show," the interface here reaches inside of those six years of programming and breaks the more than one million shows into individual sentences and counts how many of those sentences contain your keyword of interest. Instead of reporting that CNN had 24 hour-long shows yesterday that mentioned Donald Trump, the interface here will count how many sentences uttered on CNN yesterday mentioned his name - a vastly more accurate metric for assessing media attention."_
+
+The following functions are implemented:
+
+- `query_tv`:	Issue a query to the TV Explorer
+
+### Installation
+
+```{r eval=FALSE}
+devtools::install_github("hrbrmstr/newsflash")
+```
+
+```{r message=FALSE, warning=FALSE, error=FALSE}
+options(width=120)
+```
+
+### Usage
+
+```{r message=FALSE, warning=FALSE, error=FALSE}
+library(newsflash)
+library(tidyverse)
+library(ggalt) # github version
+library(hrbrmisc)
+
+# current verison
+packageVersion("newsflash")
+
+```
+
+```{r cache=TRUE}
+orange <- query_tv("trump")
+```
+
+```{r fig.height=2.75, fig.retina=2}
+arrange(orange$station_histogram, value) %>% 
+  mutate(station=factor(station, levels=station)) %>% 
+  ggplot(aes(value, station)) +
+  geom_lollipop(horizontal=TRUE, size=0.75,
+                color=ggthemes::tableau_color_pal()(10)[2]) +
+  scale_x_continuous(expand=c(0,0), label=scales::comma, limits=c(0,100000)) +
+  labs(y=NULL, x="# Mentions",
+       title="Station Histogram") +
+  theme_hrbrmstr_msc(grid="X")
+```
+
+```{r fig.height=6, fig.retina=2}
+ggplot(orange$timeline, aes(date_start, value)) +
+  geom_area(aes(group=station, fill=station), position="stack") +
+  scale_x_datetime(name=NULL, expand=c(0,0)) +
+  scale_y_continuous(name="# Mentions", label=scales::comma, limits=c(0, 8000), expand=c(0,0)) +
+  ggthemes::scale_fill_tableau(name=NULL) +
+  labs(title="Timeline") +
+  theme_hrbrmstr_msc(grid="XY") +
+  theme(legend.position="bottom") +
+  theme(axis.text.x=element_text(hjust=c(0, 0.5, 0.5, 0.5, 0.5, 0.5)))
+```
+
+The following is dynamically generated from the query results. View the R Markdown to see the code.
+
+#### `r orange$top_matches$station[1]` / `r orange$top_matches$show[1]`
+
+<`r orange$top_matches$preview_url[1]`>
+
+`r htmltools::HTML(sprintf("<img src='%s'/>", orange$top_matches$preview_thumb[1]))`
+
+>"`r gsub('trump', '🍊', orange$top_matches$snippet[1], ignore.case=TRUE)`"
+
+### Test Results
+
+```{r message=FALSE, warning=FALSE, error=FALSE}
+library(newsflash)
+library(testthat)
+
+date()
+
+test_dir("tests/")
+```
+
