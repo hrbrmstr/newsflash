@@ -8,9 +8,12 @@ Ref: <http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch
 
 >_"In collaboration with the Internet Archive's Television News Archive, GDELT's Television Explorer allows you to keyword search the closed captioning streams of the Archive's 6 years of American television news and explore macro-level trends in how America's television news is shaping the conversation around key societal issues. Unlike the Archive's primary Television News interface, which returns results at the level of an hour or half-hour "show," the interface here reaches inside of those six years of programming and breaks the more than one million shows into individual sentences and counts how many of those sentences contain your keyword of interest. Instead of reporting that CNN had 24 hour-long shows yesterday that mentioned Donald Trump, the interface here will count how many sentences uttered on CNN yesterday mentioned his name - a vastly more accurate metric for assessing media attention."_
 
+An advantage of using this over the interactive selector & downloader is that you get tidy tibbles with this package, ready to use in R.
+
 The following functions are implemented:
 
 - `query_tv`:	Issue a query to the TV Explorer
+- `list_networks`:	Helper function to identify station/network keyword and corpus date range for said market
 
 ### Installation
 
@@ -32,7 +35,12 @@ library(hrbrmisc)
 
 # current verison
 packageVersion("newsflash")
+```
 
+See what networks & associated corpus date ranges are available:
+
+```{r}
+list_networks(widget=FALSE)
 ```
 
 ```{r cache=TRUE}
