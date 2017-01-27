@@ -1,5 +1,3 @@
-utils::globalVariables(c("station_values", "date_start", "date_end", "keyword", "network", "date_range"))
-
 nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNEWSW",
                 "MSNBC", "INTERNATIONAL", "BBCNEWSSEG", "AFFNETALL", "AFFNET_ABC",
                 "AFFNET_CBS", "AFFNET_FOX", "AFFNET_MYTV", "AFFNET_NBC", "AFFNET_PBS",

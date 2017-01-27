@@ -15,4 +15,5 @@
 #' @importFrom DT datatable
 #' @importFrom scales comma
 #' @importFrom txtplot txtbarchart
+#' @importFrom tidytext unnest_tokens
 NULL

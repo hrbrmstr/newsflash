@@ -2,14 +2,24 @@
 % Please edit documentation in R/top_text.r
 \name{top_text}
 \alias{top_text}
-\title{Helper function to extract the text snippets from the top matches}
+\title{Helper function to extract the text snippets from the top matches as a tidytext-compatible
+tibble or plain character vector}
 \usage{
-top_text(x)
+top_text(x, tidy = TRUE)
 }
 \arguments{
 \item{x}{query result object from calling \code{query_tv}}
+
+\item{tidy}{if \code{TRUE} (default) reuturn a \code{tidytext} tibble with
+\code{station}, \code{show}, \code{show_date} and \code{word} columns. If
+\code{FALSE} it just returns the character vector of the caption snippets.}
 }
 \description{
-Helper function to extract the text snippets from the top matches
+Helper function to extract the text snippets from the top matches as a tidytext-compatible
+tibble or plain character vector
+}
+\examples{
+brexit <- query_tv("brexit", start_date=as.Date("2016-01-01"), end_date=as.Date("2016-12-31"))
+top_text(brexit)
 }
 

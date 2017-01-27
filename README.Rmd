@@ -13,7 +13,7 @@ An advantage of using this over the interactive selector & downloader is that yo
 The following functions are implemented:
 
 - `query_tv`:	Issue a query to the TV Explorer
-- `top_text`: Helper function to extract the text snippets from the top matches
+- `top_text`: Helper function to extract the text snippets from the top matches as a tidytext-compatible tibble or plain character vector
 - `list_networks`:	Helper function to identify station/network keyword and corpus date range for said market
 - `print.newsflash`: Helper print method for a nicer default text summary
 
@@ -54,7 +54,11 @@ query_tv("clinton", "email", "AFFMARKALL", as.Date("2016-01-01"), as.Date("2016-
 The closed-caption text snippets are returned for the "top matches" (usually max 1,000 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
 
 ```{r}
-head(top_text(query_tv("cheese", filter_network="AFFNETALL")))
+top_text(query_tv("cheese", filter_network="AFFNETALL"))
+```
+
+```{r}
+head(top_text(query_tv("cheese", filter_network="AFFNETALL"), tidy=FALSE))
 ```
 
 You can, of course, do other things with the various bits of data returned:
