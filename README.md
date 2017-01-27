@@ -10,6 +10,7 @@ An advantage of using this over the interactive selector & downloader is that yo
 The following functions are implemented:
 
 -   `query_tv`: Issue a query to the TV Explorer
+-   `top_text`: Helper function to extract the text snippets from the top matches
 -   `list_networks`: Helper function to identify station/network keyword and corpus date range for said market
 -   `print.newsflash`: Helper print method for a nicer default text summary
 
@@ -35,7 +36,7 @@ library(hrbrmisc)
 packageVersion("newsflash")
 ```
 
-    ## [1] '0.2.0'
+    ## [1] '0.3.0'
 
 See what networks & associated corpus date ranges are available:
 
@@ -168,6 +169,21 @@ query_tv("clinton", "email", "AFFMARKALL", as.Date("2016-01-01"), as.Date("2016-
     ## 10 PBS - San Francisco (KQED) Washington Week With Gwen Ifill    12
     ## # ... with 312 more rows
 
+The closed-caption text snippets are returned for the "top matches" (usually max 1,000 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
+
+``` r
+head(top_text(query_tv("cheese", filter_network="AFFNETALL")))
+```
+
+    ## [1] " [telephone rings] o.k., say 'cheese.' cheese! cheese!"                                                                                                                                                        
+    ## [2] "hmm. really? what do you kids talk about for that long? nothing. stuff. [telephone rings] o.k., say 'cheese.' cheese! cheese!"                                                                                 
+    ## [3] "why do you keep coming out here? because we're dummies. we're dummies. we're too loyal. cheese burger, cheese burger, cheese burger."                                                                          
+    ## [4] "it's not helping. i'm reading massive synaptic failure. that doesn't make anansense. this is the last one. say, 'cheesese.' cheese. cheese."                                                                   
+    ## [5] "brains! brains! sorry, guys, i get a little weird, but i found something to solve that, a cheese ball recipe, a brain cheese ball recipe. >> brains? not bread? nope. cheese brain. it's a cheese ball recipe."
+    ## [6] "i will tell you, giada, i stole hoda's top after i ate mine of yours. because hoda can't eat cheese. >> this thing is amazing. that's delicious. brussels sprouts are good. it's like cheese and cheese."
+
+You can, of course, do other things with the various bits of data returned:
+
 ``` r
 orange <- query_tv("trump")
 ```
@@ -184,7 +200,7 @@ arrange(orange$station_histogram, value) %>%
   theme_hrbrmstr_msc(grid="X")
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-7-1.png" width="672" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-8-1.png" width="672" />
 
 ``` r
 ggplot(orange$timeline, aes(date_start, value)) +
@@ -198,7 +214,7 @@ ggplot(orange$timeline, aes(date_start, value)) +
   theme(axis.text.x=element_text(hjust=c(0, 0.5, 0.5, 0.5, 0.5, 0.5)))
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-8-1.png" width="672" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" width="672" />
 
 The following is dynamically generated from the query results. View the R Markdown to see the code.
 
@@ -220,7 +236,7 @@ library(testthat)
 date()
 ```
 
-    ## [1] "Fri Jan 27 06:56:33 2017"
+    ## [1] "Fri Jan 27 07:08:11 2017"
 
 ``` r
 test_dir("tests/")

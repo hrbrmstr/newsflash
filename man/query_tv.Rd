@@ -37,6 +37,8 @@ that it includes juicy metadata with the Internet Archive preview URL,
 thumbnail URL, \emph{caption text snippet} and more.}
 }
 
+Queries resulting in no matches will display a message and return \code{NULL} invisibly.
+
 See the Reference URL for parameter info
 }
 \examples{

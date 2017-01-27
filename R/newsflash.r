@@ -32,6 +32,8 @@ nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNE
 #' thumbnail URL, \emph{caption text snippet} and more.}
 #' }
 #'
+#' Queries resulting in no matches will display a message and return \code{NULL} invisibly.
+#'
 #' See the Reference URL for parameter info
 #'
 #' @param primary_keyword primary keyword
@@ -71,6 +73,11 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
 
   res <- httr::content(res, as="text", encoding="UTF-8")
   res <- jsonlite::fromJSON(res)
+
+  if (length(res) == 1) {
+    message("No results found")
+    return(invisible(NULL))
+  }
 
   res$query_details <- dplyr::tbl_df(res$query_details)
 

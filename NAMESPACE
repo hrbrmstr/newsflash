@@ -3,6 +3,7 @@
 S3method(print,newsflash)
 export(list_networks)
 export(query_tv)
+export(top_text)
 import(httr)
 importFrom(DT,datatable)
 importFrom(anytime,anytime)
