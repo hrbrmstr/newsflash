@@ -220,7 +220,7 @@ library(testthat)
 date()
 ```
 
-    ## [1] "Fri Jan 27 06:55:24 2017"
+    ## [1] "Fri Jan 27 06:56:33 2017"
 
 ``` r
 test_dir("tests/")
