@@ -14,6 +14,7 @@ The following functions are implemented:
 
 - `query_tv`:	Issue a query to the TV Explorer
 - `list_networks`:	Helper function to identify station/network keyword and corpus date range for said market
+- `print.newsflash`: Helper print method for a nicer default text summary
 
 ### Installation
 
@@ -41,6 +42,12 @@ See what networks & associated corpus date ranges are available:
 
 ```{r}
 list_networks(widget=FALSE)
+```
+
+Basic search:
+
+```{r}
+query_tv("clinton", "email", "AFFMARKALL", as.Date("2016-01-01"), as.Date("2016-11-15"))
 ```
 
 ```{r cache=TRUE}

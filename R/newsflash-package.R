@@ -9,7 +9,10 @@
 #' @importFrom xml2 read_html
 #' @importFrom anytime anytime
 #' @importFrom tidyr unnest
-#' @importFrom dplyr tbl_df %>% mutate data_frame
+#' @importFrom dplyr tbl_df %>% mutate data_frame count as_data_frame select
+#' @importFrom purrr map_df
 #' @importFrom jsonlite fromJSON
 #' @importFrom DT datatable
+#' @importFrom scales comma
+#' @importFrom txtplot txtbarchart
 NULL

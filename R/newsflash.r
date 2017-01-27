@@ -85,12 +85,8 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
     dplyr::mutate(date=anytime::anytime(date),
                   show_date=anytime::anytime(show_date))
 
+  class(res) <- c("newsflash", class(res))
+
   res
 
 }
-
-
-
-
-
-

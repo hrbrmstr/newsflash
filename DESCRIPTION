@@ -23,5 +23,7 @@ Imports:
     rvest,
     xml2,
     stringi,
-    DT
+    DT,
+    scales,
+    purrr
 RoxygenNote: 5.0.1
