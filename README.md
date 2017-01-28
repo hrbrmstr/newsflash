@@ -10,7 +10,7 @@ An advantage of using this over the interactive selector & downloader is that yo
 The following functions are implemented:
 
 -   `query_tv`: Issue a query to the TV Explorer
--   `top_text`: Helper function to extract the text snippets from the top matches
+-   `top_text`: Helper function to extract the text snippets from the top matches as a tidytext-compatible tibble or plain character vector
 -   `list_networks`: Helper function to identify station/network keyword and corpus date range for said market
 -   `print.newsflash`: Helper print method for a nicer default text summary
 
@@ -172,7 +172,26 @@ query_tv("clinton", "email", "AFFMARKALL", as.Date("2016-01-01"), as.Date("2016-
 The closed-caption text snippets are returned for the "top matches" (usually max 1,000 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
 
 ``` r
-head(top_text(query_tv("cheese", filter_network="AFFNETALL")))
+top_text(query_tv("cheese", filter_network="AFFNETALL"))
+```
+
+    ## # A tibble: 40,649 × 4
+    ##                   station                         show  show_date      word
+    ##                     <chr>                        <chr>     <dttm>     <chr>
+    ## 1  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 telephone
+    ## 2  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25     rings
+    ## 3  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25       o.k
+    ## 4  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25       say
+    ## 5  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25    cheese
+    ## 6  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25    cheese
+    ## 7  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25    cheese
+    ## 8  NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25       hmm
+    ## 9  NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25    really
+    ## 10 NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25      what
+    ## # ... with 40,639 more rows
+
+``` r
+head(top_text(query_tv("cheese", filter_network="AFFNETALL"), tidy=FALSE))
 ```
 
     ## [1] " [telephone rings] o.k., say 'cheese.' cheese! cheese!"                                                                                                                                                        
@@ -200,7 +219,7 @@ arrange(orange$station_histogram, value) %>%
   theme_hrbrmstr_msc(grid="X")
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-8-1.png" width="672" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" width="672" />
 
 ``` r
 ggplot(orange$timeline, aes(date_start, value)) +
@@ -214,7 +233,7 @@ ggplot(orange$timeline, aes(date_start, value)) +
   theme(axis.text.x=element_text(hjust=c(0, 0.5, 0.5, 0.5, 0.5, 0.5)))
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" width="672" />
+<img src="README_files/figure-markdown_github/unnamed-chunk-10-1.png" width="672" />
 
 The following is dynamically generated from the query results. View the R Markdown to see the code.
 
@@ -236,7 +255,7 @@ library(testthat)
 date()
 ```
 
-    ## [1] "Fri Jan 27 07:08:11 2017"
+    ## [1] "Fri Jan 27 19:02:24 2017"
 
 ``` r
 test_dir("tests/")
