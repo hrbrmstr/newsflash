@@ -40,7 +40,7 @@ library(hrbrmisc)
 packageVersion("newsflash")
 ```
 
-    ## [1] '0.3.1'
+    ## [1] '0.4.0'
 
 See what networks & associated corpus date ranges are available:
 

@@ -1,7 +1,7 @@
 Package: newsflash
 Type: Package
 Title: Tools to Work with the Internet Archive and GDELT Television Explorer
-Version: 0.3.1
+Version: 0.4.0
 Date: 2017-01-26
 Author: Bob Rudis (bob@@rud.is)
 Maintainer: Bob Rudis <bob@rud.is>
