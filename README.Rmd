@@ -12,6 +12,8 @@ An advantage of using this over the interactive selector & downloader is that yo
 
 NOTE: While I don't claim that this alpha-package is anywhere near perfect, the IA/GDELT TV API coughs up blood every so often so when there are critical errors run the same query in their web interface before submitting an issue. I kept getting errors when searching all affiliate markets for the "mexican president" query that also generate errors on the web site when JSON is selected as output (it's fine on the web site if the choice is interactive browser visualizations). Submit those errors to them, not here.
 
+NOTE: As of 2017-01-29 the API is not returning `keyword_primary` in the `query_details` field. It's not an error with this package.
+
 The following functions are implemented:
 
 - `query_tv`:	Issue a query to the TV Explorer

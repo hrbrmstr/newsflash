@@ -100,13 +100,11 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
   query$context_keywords <- gsub(" ", "+", query$context_keywords)
 
   if (tolower(timespan) == "all") {
-    query$filter_timespan = "ALL"
+    query$filter_timespan <- "ALL"
   } else {
-    query <- list(
-      filter_timespan = "CUSTOM",
-      filter_timespan_custom_start = start_date,
-      filter_timespan_custom_end = end_date
-    )
+    query$filter_timespan <- "CUSTOM"
+    query$filter_timespan_custom_start <- start_date
+    query$filter_timespan_custom_end <- end_date
   }
 
   URL <- "http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch"
