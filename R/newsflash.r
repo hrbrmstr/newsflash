@@ -40,8 +40,12 @@ nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNE
 #' @param filter_network filter by network. Use \code{list_networks()} to see valid values
 #'    and to get a hint about valid date ranges for \code{start_date} and \code{end_date}.
 #'    Defaults to \code{NATIONAL}.
-#' @param start_date,end_date \code{Date} object for start/end of search. Defaults to the
-#'    last quarter of 2016: Oct-2016 to Dec-2016
+#' @param timespan if \code{all} (the default) all possible timeline data will be returned
+#'    (there is a max number of timeline results and that limit is changing regularly enough
+#'    that you need to check the site to know what it is). If not \code{all} then you
+#'    must specify \code{start_date} and \code{end_date}.
+#' @param start_date,end_date start/end dates for search if \code{timespan} is
+#'    not \code{ALL}. Can be a \code{Date} object or an ISO character date (e.g. \code{2016-11-12}).
 #' @references \url{http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch}
 #' @export
 #' @examples
@@ -49,23 +53,50 @@ nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNE
 #' query_tv("trump")
 query_tv <- function(primary_keyword, context_keywords=NULL,
                      filter_network = "NATIONAL",
-                     start_date=as.Date("2016-10-01"), end_date=as.Date("2016-12-31")) {
+                     timespan="ALL",
+                     start_date=NULL, end_date=NULL) {
 
-  start_date <- format(start_date, "%m/%d/%Y")
-  end_date <- format(end_date, "%m/%d/%Y")
+  if (is.null(timespan) | (tolower(timespan) != "all")) {
+
+    if (is.null(start_date) | is.null(end_date)) {
+      message("timespan was not 'all' but no start/end date(s) were specified. Defaulting to 'all'.")
+      timespan <- "all"
+    } else {
+
+      start_date <- format(as.Date(start_date), "%m/%d/%Y")
+      end_date <- format(as.Date(end_date), "%m/%d/%Y")
+
+    }
+
+  }
 
   filter_network <- match.arg(filter_network, nf_markets)
 
-  httr::GET(url="http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch",
-            query=list(primary_keyword = primary_keyword,
-                       context_keywords = context_keywords,
-                       filter_network = filter_network,
-                       filter_timespan = "CUSTOM",
-                       filter_timespan_custom_start = start_date,
-                       filter_timespan_custom_end = end_date,
-                       filter_displayas = "RAW",
-                       filter_combineseparate = "SEPARATE",
-                       filter_outputtype = "JSON")) -> res
+  if (tolower(timespan) == "all") {
+
+    httr::GET(url="http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch",
+              query=list(primary_keyword = primary_keyword,
+                         context_keywords = context_keywords,
+                         filter_network = filter_network,
+                         filter_timespan = "ALL",
+                         filter_displayas = "RAW",
+                         filter_combineseparate = "SEPARATE",
+                         filter_outputtype = "JSON")) -> res
+
+  } else {
+
+    httr::GET(url="http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch",
+              query=list(primary_keyword = primary_keyword,
+                         context_keywords = context_keywords,
+                         filter_network = filter_network,
+                         filter_timespan = "CUSTOM",
+                         filter_timespan_custom_start = start_date,
+                         filter_timespan_custom_end = end_date,
+                         filter_displayas = "RAW",
+                         filter_combineseparate = "SEPARATE",
+                         filter_outputtype = "JSON")) -> res
+
+  }
 
   httr::stop_for_status(res)
 
