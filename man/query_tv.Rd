@@ -5,8 +5,8 @@
 \title{Issue a query to the TV Explorer}
 \usage{
 query_tv(primary_keyword, context_keywords = NULL,
-  filter_network = "NATIONAL", start_date = as.Date("2016-10-01"),
-  end_date = as.Date("2016-12-31"))
+  filter_network = "NATIONAL", timespan = "ALL", start_date = NULL,
+  end_date = NULL)
 }
 \arguments{
 \item{primary_keyword}{primary keyword}
@@ -18,8 +18,13 @@ why this is a useful parameter)}
 and to get a hint about valid date ranges for \code{start_date} and \code{end_date}.
 Defaults to \code{NATIONAL}.}
 
-\item{start_date, end_date}{\code{Date} object for start/end of search. Defaults to the
-last quarter of 2016: Oct-2016 to Dec-2016}
+\item{timespan}{if "\code{all}" (the default) all possible timeline data will be returned
+(there is a max number of timeline results and that limit is changing regularly enough
+that you need to check the site to know what it is). If not "\code{all}" then you
+must specify \code{start_date} and \code{end_date}.}
+
+\item{start_date, end_date}{start/end dates for search if \code{timespan} is
+not "\code{all}". Can be a \code{Date} object or an ISO character date (e.g. \code{2016-11-12}).}
 }
 \description{
 Successful queries (API errors tend to be date-range related but there
@@ -37,13 +42,28 @@ that it includes juicy metadata with the Internet Archive preview URL,
 thumbnail URL, \emph{caption text snippet} and more.}
 }
 
+See the Reference URL for more detailed parameter info.
+}
+\section{Queries}{
+
+
 Queries resulting in no matches will display a message and return \code{NULL} invisibly.
 
-See the Reference URL for parameter info
+Both query fields support "OR" queries by separating query keywords with a comma ("\code{,}").
+
+There is a maximum of 2,500 results per query. If you need to return more results than
+this, split your query time frame up into multiple smaller date ranges (ie, if your query
+returns 3,000 results over a 30 day period, split it into two 15 day period queries).
+
+When specifying dates and the time period is 7 days or less, the timeline result will
+switch from daily resolution to hourly resolution to make it possible to examine how
+coverage of a topic changed over the course of a day and when each network first started
+discussing it.
 }
 \examples{
 query_tv("terror", "isis")
-query_tv("trump")
+query_tv("british prime minister")
+query_tv("mexican president")
 }
 \references{
 \url{http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch}

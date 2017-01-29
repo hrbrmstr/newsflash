@@ -7,6 +7,8 @@ Ref: <http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch
 
 An advantage of using this over the interactive selector & downloader is that you get tidy tibbles with this package, ready to use in R.
 
+NOTE: While I don't claim that this alpha-package is anywhere near perfect, the IA/GDELT TV API coughs up blood every so often so when there are critical errors run the same query in their web interface before submitting an issue. I kept getting errors when searching all affiliate markets for the "mexican president" query that also generate errors on the web site when JSON is selected as output (it's fine on the web site if the choice is interactive browser visualizations). Submit those errors to them, not here.
+
 The following functions are implemented:
 
 -   `query_tv`: Issue a query to the TV Explorer
@@ -49,21 +51,21 @@ list_networks(widget=FALSE)
     ##                         <chr>                               <chr>                               <chr>
     ## 1                    NATIONAL               All National Networks (See individual networks for dates)
     ## 2                     ALJAZAM                   Aljazeera America             (8/20/2013 - 4/13/2016)
-    ## 3                   BLOOMBERG                           Bloomberg             (12/5/2013 - 1/27/2017)
-    ## 4                        CNBC                                CNBC              (7/2/2009 - 1/27/2017)
-    ## 5                         CNN                                 CNN              (7/2/2009 - 1/27/2017)
-    ## 6                         FBC                        FOX Business             (8/20/2012 - 1/27/2017)
-    ## 7                    FOXNEWSW                            FOX News             (7/16/2011 - 1/27/2017)
-    ## 8                       MSNBC                               MSNBC              (7/2/2009 - 1/26/2017)
+    ## 3                   BLOOMBERG                           Bloomberg             (12/5/2013 - 1/28/2017)
+    ## 4                        CNBC                                CNBC              (7/2/2009 - 1/28/2017)
+    ## 5                         CNN                                 CNN              (7/2/2009 - 1/28/2017)
+    ## 6                         FBC                        FOX Business             (8/20/2012 - 1/28/2017)
+    ## 7                    FOXNEWSW                            FOX News             (7/16/2011 - 1/28/2017)
+    ## 8                       MSNBC                               MSNBC              (7/2/2009 - 1/27/2017)
     ## 9               INTERNATIONAL          All International Networks (See individual networks for dates)
-    ## 10                 BBCNEWSSEG                            BBC News              (1/1/2017 - 1/26/2017)
+    ## 10                 BBCNEWSSEG                            BBC News              (1/1/2017 - 1/28/2017)
     ## 11                  AFFNETALL              All Affiliate Networks (See individual networks for dates)
-    ## 12                 AFFNET_ABC              ABC Affiliate Stations              (7/2/2009 - 1/27/2017)
-    ## 13                 AFFNET_CBS              CBS Affiliate Stations              (7/2/2009 - 1/27/2017)
-    ## 14                 AFFNET_FOX              FOX Affiliate Stations              (7/3/2009 - 1/27/2017)
+    ## 12                 AFFNET_ABC              ABC Affiliate Stations              (7/2/2009 - 1/28/2017)
+    ## 13                 AFFNET_CBS              CBS Affiliate Stations              (7/2/2009 - 1/28/2017)
+    ## 14                 AFFNET_FOX              FOX Affiliate Stations              (7/3/2009 - 1/28/2017)
     ## 15                AFFNET_MYTV             MYTV Affiliate Stations            (12/11/2015 - 12/2/2016)
-    ## 16                 AFFNET_NBC              NBC Affiliate Stations              (7/2/2009 - 1/27/2017)
-    ## 17                 AFFNET_PBS              PBS Affiliate Stations             (7/14/2010 - 1/27/2017)
+    ## 16                 AFFNET_NBC              NBC Affiliate Stations              (7/2/2009 - 1/28/2017)
+    ## 17                 AFFNET_PBS              PBS Affiliate Stations             (7/14/2010 - 1/28/2017)
     ## 18                 AFFMARKALL               All Affiliate Markets (See individual networks for dates)
     ## 19           AFFMARKET_Boston           Boston Affiliate Stations             (9/30/2015 - 12/2/2016)
     ## 20     AFFMARKET_Cedar Rapids     Cedar Rapids Affiliate Stations            (10/19/2015 - 12/2/2016)
@@ -86,13 +88,13 @@ list_networks(widget=FALSE)
     ## 37       AFFMARKET_Newport KY       Newport KY Affiliate Stations              (1/6/2016 - 3/23/2016)
     ## 38          AFFMARKET_Norfolk          Norfolk Affiliate Stations               (1/6/2016 - 3/9/2016)
     ## 39          AFFMARKET_Orlando          Orlando Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 40     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations              (6/6/2014 - 1/27/2017)
+    ## 40     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations              (6/6/2014 - 1/28/2017)
     ## 41       AFFMARKET_Portsmouth       Portsmouth Affiliate Stations               (1/6/2016 - 3/9/2016)
     ## 42           AFFMARKET_Pueblo           Pueblo Affiliate Stations              (1/19/2016 - 3/9/2016)
     ## 43          AFFMARKET_Raleigh          Raleigh Affiliate Stations             (1/13/2016 - 12/2/2016)
     ## 44             AFFMARKET_Reno             Reno Affiliate Stations               (1/1/2016 - 3/2/2016)
     ## 45          AFFMARKET_Roanoke          Roanoke Affiliate Stations              (1/26/2016 - 3/1/2016)
-    ## 46    AFFMARKET_San Francisco    San Francisco Affiliate Stations             (7/14/2010 - 1/27/2017)
+    ## 46    AFFMARKET_San Francisco    San Francisco Affiliate Stations             (7/14/2010 - 1/28/2017)
     ## 47   AFFMARKET_Shaker Heights   Shaker Heights Affiliate Stations              (1/6/2016 - 12/2/2016)
     ## 48       AFFMARKET_Sioux City       Sioux City Affiliate Stations             (10/13/2015 - 3/2/2016)
     ## 49   AFFMARKET_St. Petersburg   St. Petersburg Affiliate Stations              (1/6/2016 - 12/2/2016)
@@ -104,102 +106,104 @@ list_networks(widget=FALSE)
 Basic search:
 
 ``` r
-query_tv("clinton", "email", "AFFMARKALL", as.Date("2016-01-01"), as.Date("2016-11-15"))
+query_tv("clinton", "email", "AFFMARKALL")
 ```
 
     ## Query:
-    ##    Primary keyword: clinton 
+    ##    Primary keyword:  
     ##   Context keywords: email 
     ##           Stations: AFFMARKALL 
-    ##         Start date: 2016-01-01 
-    ##           End date: 2016-11-15 
+    ##         Start date: 2009-06-03 
+    ##           End date: 2017-01-27 
     ## 
-    ## 25,920 timeline results from 81 stations:
+    ## 229,108 timeline results from 82 stations:
     ## 
-    ##   +--+--------------------+-----------------*--+--------------------+---------------------+----+
-    ## 6 +                                         *                                                  +
-    ##   |              *                  *       *                  *                           *   |
-    ## 4 +   * *        *         *        *       *                  **                          *   +
-    ##   |   * *        *         *        *       *  *         *     ** *                    *   *   |
-    ## 2 +   ***        *   *  * **      * *       * ***        *     ** ***   *  *           **  *   +
-    ##   |   *** **  ** *   **** **      ****  *   ****** *     ***** ** ***   ** ***  **   **** **   |
-    ## 0 +--+******-******************-******************-*******************-******************-**---+
-    ##      0                   20                   40                   60                    80     
+    ##   +--+--------------------+------------------*-+--------------------+-------------------+------+
+    ## 8 +                                          *                                             *   +
+    ## 6 +                                          *                                             *   +
+    ##   |              *          *       *        *                 *                           *   |
+    ## 4 +   * *        *   *      *       *        *                 * *                         *   +
+    ## 2 +   * *        *   *     **     * *        *  **       *     * * **   *  *         * **  *   +
+    ##   |   *** **   * *   ** *****    *****   *   *******     *** * * * ***  ** ***  **   **** **   |
+    ## 0 +--+*******-************************-*************************-************************-**---+
+    ##      0                   20                   40                   60                  80       
     ## Legend: 
     ## 1=ABC - Boston (WCVB), 2=ABC - Boston (WMUR), 3=ABC - Cedar Rapids (KCRG), 4=ABC - Charlotte (WS
     ## OC), 5=ABC - Cincinnati (WCPO), 6=ABC - Cleveland (WEWS), 7=ABC - Colorado Springs (KRDO), 8=ABC
     ##  - Columbia (WOLO), 9=ABC - Denver (KMGH), 10=ABC - Hampton (WVEC), 11=ABC - Las Vegas (KTNV), 1
     ## 2=ABC - Lynchburg (WSET), 13=ABC - Miami (WPLG), 14=ABC - Orlando (WFTV), 15=ABC - Philadelphia 
-    ## (WPVI), 16=ABC - Reno (KOLO), 17=ABC - Sioux City (KCAU), 18=ABC - Tampa (WFTS), 19=ABC - Washin
-    ## gton DC (WJLA), 20=CBS - Boston (WBZ), 21=CBS - Cedar Rapids (KGAN), 22=CBS - Charlotte (WBTV), 
-    ## 23=CBS - Cincinnati (WKRC), 24=CBS - Colorado Springs (KKTV), 25=CBS - Columbia (WLTX), 26=CBS -
-    ##  Dakota Dunes SD (KMEG), 27=CBS - Denver (KCNC), 28=CBS - Des Moines (KCCI), 29=CBS - Las Vegas 
-    ## (KLAS), 30=CBS - Miami (WFOR), 31=CBS - Norfolk (WTKR), 32=CBS - Orlando (WKMG), 33=CBS - Philad
-    ## elphia (KYW), 34=CBS - Raleigh (WRAL), 35=CBS - Reno (KTVN), 36=CBS - Roanoke (WDBJ), 37=CBS - S
-    ## an Francisco (KPIX), 38=CBS - Shaker Heights (WOIO), 39=CBS - St. Petersburg (WTSP), 40=CBS - Wa
-    ## shington DC (WUSA), 41=FOX - Boston (WFXT), 42=FOX - Cedar Rapids (KFXA), 43=FOX - Cleveland (WJ
-    ## W), 44=FOX - Columbia (WACH), 45=FOX - Dakota Dunes SD (KPTH), 46=FOX - Denver (KDVR), 47=FOX - 
-    ## Des Moines (KDSM), 48=FOX - Greenville (WHNS), 49=FOX - Las Vegas (KVVU), 50=FOX - Newport KY (W
-    ## XIX), 51=FOX - Orlando (WOFL), 52=FOX - Philadelphia (WTXF), 53=FOX - Raleigh (WRAZ), 54=FOX - R
-    ## oanoke (WFXR), 55=FOX - San Francisco (KTVU), 56=FOX - Tampa (WTVT), 57=FOX - Virginia Beach (WV
-    ## BT), 58=FOX - Washington DC (WTTG), 59=MYTV - Las Vegas (KSNV), 60=NBC - Boston (WHDH), 61=NBC -
-    ##  Charlotte (WCNC), 62=NBC - Cincinnati (WLWT), 63=NBC - Cleveland (WKYC), 64=NBC - Columbia (WIS
-    ## ), 65=NBC - Daytona Beach (WESH), 66=NBC - Denver (KUSA), 67=NBC - Des Moines (WHO), 68=NBC - Go
-    ## ldsboro (WNCN), 69=NBC - Greenville (WYFF), 70=NBC - Miami (WTVJ), 71=NBC - Philadelphia (WCAU),
-    ##  72=NBC - Portsmouth (WAVY), 73=NBC - Pueblo (KOAA), 74=NBC - Reno (KRNV), 75=NBC - Roanoke (WSL
-    ## S), 76=NBC - San Francisco (KNTV), 77=NBC - Sioux City (KTIV), 78=NBC - Tampa (WFLA), 79=NBC - W
-    ## ashington DC (WRC), 80=NBC - Waterloo (KWWL), 81=PBS - San Francisco (KQED)
+    ## (WPVI), 16=ABC - Reno (KOLO), 17=ABC - San Francisco (KGO), 18=ABC - Sioux City (KCAU), 19=ABC -
+    ##  Tampa (WFTS), 20=ABC - Washington DC (WJLA), 21=CBS - Boston (WBZ), 22=CBS - Cedar Rapids (KGAN
+    ## ), 23=CBS - Charlotte (WBTV), 24=CBS - Cincinnati (WKRC), 25=CBS - Colorado Springs (KKTV), 26=C
+    ## BS - Columbia (WLTX), 27=CBS - Dakota Dunes SD (KMEG), 28=CBS - Denver (KCNC), 29=CBS - Des Moin
+    ## es (KCCI), 30=CBS - Las Vegas (KLAS), 31=CBS - Miami (WFOR), 32=CBS - Norfolk (WTKR), 33=CBS - O
+    ## rlando (WKMG), 34=CBS - Philadelphia (KYW), 35=CBS - Raleigh (WRAL), 36=CBS - Reno (KTVN), 37=CB
+    ## S - Roanoke (WDBJ), 38=CBS - San Francisco (KPIX), 39=CBS - Shaker Heights (WOIO), 40=CBS - St. 
+    ## Petersburg (WTSP), 41=CBS - Washington DC (WUSA), 42=FOX - Boston (WFXT), 43=FOX - Cedar Rapids 
+    ## (KFXA), 44=FOX - Cleveland (WJW), 45=FOX - Columbia (WACH), 46=FOX - Dakota Dunes SD (KPTH), 47=
+    ## FOX - Denver (KDVR), 48=FOX - Des Moines (KDSM), 49=FOX - Greenville (WHNS), 50=FOX - Las Vegas 
+    ## (KVVU), 51=FOX - Newport KY (WXIX), 52=FOX - Orlando (WOFL), 53=FOX - Philadelphia (WTXF), 54=FO
+    ## X - Raleigh (WRAZ), 55=FOX - Roanoke (WFXR), 56=FOX - San Francisco (KTVU), 57=FOX - Tampa (WTVT
+    ## ), 58=FOX - Virginia Beach (WVBT), 59=FOX - Washington DC (WTTG), 60=MYTV - Las Vegas (KSNV), 61
+    ## =NBC - Boston (WHDH), 62=NBC - Charlotte (WCNC), 63=NBC - Cincinnati (WLWT), 64=NBC - Cleveland 
+    ## (WKYC), 65=NBC - Columbia (WIS), 66=NBC - Daytona Beach (WESH), 67=NBC - Denver (KUSA), 68=NBC -
+    ##  Des Moines (WHO), 69=NBC - Goldsboro (WNCN), 70=NBC - Greenville (WYFF), 71=NBC - Miami (WTVJ),
+    ##  72=NBC - Philadelphia (WCAU), 73=NBC - Portsmouth (WAVY), 74=NBC - Pueblo (KOAA), 75=NBC - Reno
+    ##  (KRNV), 76=NBC - Roanoke (WSLS), 77=NBC - San Francisco (KNTV), 78=NBC - Sioux City (KTIV), 79=
+    ## NBC - Tampa (WFLA), 80=NBC - Washington DC (WRC), 81=NBC - Waterloo (KWWL), 82=PBS - San Francis
+    ## co (KQED)
     ## 
-    ## 1,000 top query matches from the following shows:
+    ## 2,500 top query matches from the following shows:
     ## 
-    ## Source: local data frame [322 x 3]
-    ## Groups: station [61]
+    ## Source: local data frame [475 x 3]
+    ## Groups: station [69]
     ## 
     ##                       station                            show     n
     ##                         <chr>                           <chr> <int>
-    ## 1  PBS - San Francisco (KQED)                    PBS NewsHour    49
-    ## 2         ABC - Boston (WCVB)          Newscenter 5 Eyeopener    39
-    ## 3  CBS - San Francisco (KPIX)              KPIX 5 News at 5PM    23
-    ## 4          FOX - Tampa (WTVT)         Good Day Tampa Bay  9AM    18
-    ## 5  CBS - San Francisco (KPIX)            KPIX 5 News at 600PM    16
-    ## 6          CBS - Boston (WBZ)                WBZ This Morning    14
-    ## 7  CBS - San Francisco (KPIX)                     KPIX 5 News    13
-    ## 8   FOX - Cedar Rapids (KFXA)                Fox 28 News at 9    12
-    ## 9          NBC - Tampa (WFLA)           News Ch8 Today at 6AM    12
-    ## 10 PBS - San Francisco (KQED) Washington Week With Gwen Ifill    12
-    ## # ... with 312 more rows
+    ## 1  PBS - San Francisco (KQED)                    PBS NewsHour   144
+    ## 2         ABC - Boston (WCVB)          Newscenter 5 Eyeopener    78
+    ## 3  PBS - San Francisco (KQED) Washington Week With Gwen Ifill    50
+    ## 4  CBS - San Francisco (KPIX)              KPIX 5 News at 5PM    43
+    ## 5  CBS - San Francisco (KPIX)              KPIX 5 News at 5AM    38
+    ## 6  CBS - San Francisco (KPIX)            KPIX 5 News at 600PM    38
+    ## 7  CBS - San Francisco (KPIX)              KPIX 5 News at 6AM    37
+    ## 8  CBS - San Francisco (KPIX)      KPIX 5 News  Early Edition    33
+    ## 9   ABC - Philadelphia (WPVI)          Action News at 1230 PM    32
+    ## 10         FOX - Tampa (WTVT)         Good Day Tampa Bay  9AM    31
+    ## # ... with 465 more rows
 
-The closed-caption text snippets are returned for the "top matches" (usually max 1,000 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
-
-``` r
-top_text(query_tv("cheese", filter_network="AFFNETALL"))
-```
-
-    ## # A tibble: 40,649 × 4
-    ##                   station                         show           show_date      word
-    ##                     <chr>                        <chr>              <dttm>     <chr>
-    ## 1  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00 telephone
-    ## 2  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00     rings
-    ## 3  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00       o.k
-    ## 4  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00       say
-    ## 5  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00    cheese
-    ## 6  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00    cheese
-    ## 7  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00    cheese
-    ## 8  NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25 10:00:00       hmm
-    ## 9  NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25 10:00:00    really
-    ## 10 NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25 10:00:00      what
-    ## # ... with 40,639 more rows
+The closed-caption text snippets are returned for the "top matches" (usually max 2,500 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
 
 ``` r
-head(top_text(query_tv("cheese", filter_network="AFFNETALL"), tidy=FALSE))
+mex <- query_tv("mexican president", filter_network="NATIONAL")
+top_text(mex)
 ```
 
-    ## [1] " [telephone rings] o.k., say 'cheese.' cheese! cheese!"                                                                                                                                                        
-    ## [2] "hmm. really? what do you kids talk about for that long? nothing. stuff. [telephone rings] o.k., say 'cheese.' cheese! cheese!"                                                                                 
-    ## [3] "why do you keep coming out here? because we're dummies. we're dummies. we're too loyal. cheese burger, cheese burger, cheese burger."                                                                          
-    ## [4] "it's not helping. i'm reading massive synaptic failure. that doesn't make anansense. this is the last one. say, 'cheesese.' cheese. cheese."                                                                   
-    ## [5] "brains! brains! sorry, guys, i get a little weird, but i found something to solve that, a cheese ball recipe, a brain cheese ball recipe. >> brains? not bread? nope. cheese brain. it's a cheese ball recipe."
-    ## [6] "i will tell you, giada, i stole hoda's top after i ate mine of yours. because hoda can't eat cheese. >> this thing is amazing. that's delicious. brussels sprouts are good. it's like cheese and cheese."
+    ## # A tibble: 183,676 × 4
+    ##    station         show           show_date   word
+    ##      <chr>        <chr>              <dttm>  <chr>
+    ## 1     CNBC Street Signs 2016-09-30 08:00:00      i
+    ## 2     CNBC Street Signs 2016-09-30 08:00:00    had
+    ## 3     CNBC Street Signs 2016-09-30 08:00:00     to
+    ## 4     CNBC Street Signs 2016-09-30 08:00:00  watch
+    ## 5     CNBC Street Signs 2016-09-30 08:00:00     it
+    ## 6     CNBC Street Signs 2016-09-30 08:00:00      a
+    ## 7     CNBC Street Signs 2016-09-30 08:00:00 couple
+    ## 8     CNBC Street Signs 2016-09-30 08:00:00     of
+    ## 9     CNBC Street Signs 2016-09-30 08:00:00  times
+    ## 10    CNBC Street Signs 2016-09-30 08:00:00     he
+    ## # ... with 183,666 more rows
+
+``` r
+head(top_text(mex, tidy=FALSE))
+```
+
+    ## [1] "i had to watch it a couple of times. he was nervous. cat got his tongue whatever. trudeau, his neighbor in canada. the mexican president."                                                                                                                                                                                                                                                     
+    ## [2] "selectselected care about the middle east be at the economic ones are understated because we will not have to shift so much capital abroad, everyone wants to buy foreign oil. ashley: the other issue is security. some have been undone or completely scrapped for the current mexican president. something that will not get resolved on this summit. the mexican president will push back."
+    ## [3] "walk in, hey let's get to know each other. that is all he was ever going to do. except he was not consistent. it was never discussed. mexican president."                                                                                                                                                                                                                                      
+    ## [4] "i'm sorry to cut you off. thank you very much. i appreciate you joining us. pint made. former mexican president fox."                                                                                                                                                                                                                                                                          
+    ## [5] "we may have to rename it. it's going to be different. in mexico you can't succeed yourself. get to know him. the new mexican president."                                                                                                                                                                                                                                                       
+    ## [6] "we may have to rename it. it's going to be different. in mexico you can't succeed yourself. get to know him. the new mexican president."
 
 You can, of course, do other things with the various bits of data returned:
 
@@ -213,7 +217,7 @@ arrange(orange$station_histogram, value) %>%
   ggplot(aes(value, station)) +
   geom_lollipop(horizontal=TRUE, size=0.75,
                 color=ggthemes::tableau_color_pal()(10)[2]) +
-  scale_x_continuous(expand=c(0,0), label=scales::comma, limits=c(0,100000)) +
+  scale_x_continuous(expand=c(0,0), label=scales::comma, limits=c(0,400000)) +
   labs(y=NULL, x="# Mentions",
        title="Station Histogram") +
   theme_hrbrmstr_msc(grid="X")
@@ -222,7 +226,9 @@ arrange(orange$station_histogram, value) %>%
 <img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" width="672" />
 
 ``` r
-ggplot(orange$timeline, aes(date_start, value)) +
+mutate(orange$timeline, date_start=as.Date(date_start)) %>% 
+  filter(date_start >= as.Date("2015-01-01")) %>% 
+  ggplot(aes(date_start, value)) +
   geom_area(aes(group=station, fill=station), position="stack") +
   scale_x_date(name=NULL, expand=c(0,0)) +
   scale_y_continuous(name="# Mentions", label=scales::comma, limits=c(0, 8000), expand=c(0,0)) +
@@ -237,14 +243,14 @@ ggplot(orange$timeline, aes(date_start, value)) +
 
 The following is dynamically generated from the query results. View the R Markdown to see the code.
 
-#### FOX Business / Countdown to the Closing Bell With Liz Claman
+#### CNBC / Squawk Box
 
-<https://archive.org/details/FBC_20161025_190000_Countdown_to_the_Closing_Bell_With_Liz_Claman#start/3280/end/3315>
+<https://archive.org/details/CNBC_20090814_100000_Squawk_Box#start/10780/end/10815>
 
 <!--html_preserve-->
-<img src='https://archive.org/download/FBC_20161025_190000_Countdown_to_the_Closing_Bell_With_Liz_Claman/FBC_20161025_190000_Countdown_to_the_Closing_Bell_With_Liz_Claman.thumbs/FBC_20161025_190000_Countdown_to_the_Closing_Bell_With_Liz_Claman_000001.jpg'/><!--/html_preserve-->
+<img src='https://archive.org/download/CNBC_20090814_100000_Squawk_Box/CNBC_20090814_100000_Squawk_Box.thumbs/CNBC_20090814_100000_Squawk_Box_000001.jpg'/><!--/html_preserve-->
 
-> "\[cheering\] boy, this is a big crowd by the way. \[cheering\] a lot of people. this is a lot of people. 🍊. 🍊, 🍊, 🍊, 🍊."
+> "that was part of this. that was a great name, you know. phenomenal. 🍊 people. 🍊 cars."
 
 ### Test Results
 
@@ -255,7 +261,7 @@ library(testthat)
 date()
 ```
 
-    ## [1] "Sat Jan 28 22:16:43 2017"
+    ## [1] "Sun Jan 29 16:02:13 2017"
 
 ``` r
 test_dir("tests/")

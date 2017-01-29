@@ -10,6 +10,8 @@ Ref: <http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch
 
 An advantage of using this over the interactive selector & downloader is that you get tidy tibbles with this package, ready to use in R.
 
+NOTE: While I don't claim that this alpha-package is anywhere near perfect, the IA/GDELT TV API coughs up blood every so often so when there are critical errors run the same query in their web interface before submitting an issue. I kept getting errors when searching all affiliate markets for the "mexican president" query that also generate errors on the web site when JSON is selected as output (it's fine on the web site if the choice is interactive browser visualizations). Submit those errors to them, not here.
+
 The following functions are implemented:
 
 - `query_tv`:	Issue a query to the TV Explorer
@@ -48,17 +50,18 @@ list_networks(widget=FALSE)
 Basic search:
 
 ```{r}
-query_tv("clinton", "email", "AFFMARKALL", as.Date("2016-01-01"), as.Date("2016-11-15"))
+query_tv("clinton", "email", "AFFMARKALL")
 ```
 
-The closed-caption text snippets are returned for the "top matches" (usually max 1,000 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
+The closed-caption text snippets are returned for the "top matches" (usually max 2,500 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
 
 ```{r}
-top_text(query_tv("cheese", filter_network="AFFNETALL"))
+mex <- query_tv("mexican president", filter_network="NATIONAL")
+top_text(mex)
 ```
 
 ```{r}
-head(top_text(query_tv("cheese", filter_network="AFFNETALL"), tidy=FALSE))
+head(top_text(mex, tidy=FALSE))
 ```
 
 You can, of course, do other things with the various bits of data returned:
@@ -73,14 +76,16 @@ arrange(orange$station_histogram, value) %>%
   ggplot(aes(value, station)) +
   geom_lollipop(horizontal=TRUE, size=0.75,
                 color=ggthemes::tableau_color_pal()(10)[2]) +
-  scale_x_continuous(expand=c(0,0), label=scales::comma, limits=c(0,100000)) +
+  scale_x_continuous(expand=c(0,0), label=scales::comma, limits=c(0,400000)) +
   labs(y=NULL, x="# Mentions",
        title="Station Histogram") +
   theme_hrbrmstr_msc(grid="X")
 ```
 
-```{r fig.height=6, fig.retina=2}
-ggplot(orange$timeline, aes(date_start, value)) +
+```{r warning=FALSE, message=FALSE, fig.height=6, fig.retina=2}
+mutate(orange$timeline, date_start=as.Date(date_start)) %>% 
+  filter(date_start >= as.Date("2015-01-01")) %>% 
+  ggplot(aes(date_start, value)) +
   geom_area(aes(group=station, fill=station), position="stack") +
   scale_x_date(name=NULL, expand=c(0,0)) +
   scale_y_continuous(name="# Mentions", label=scales::comma, limits=c(0, 8000), expand=c(0,0)) +
@@ -93,13 +98,13 @@ ggplot(orange$timeline, aes(date_start, value)) +
 
 The following is dynamically generated from the query results. View the R Markdown to see the code.
 
-#### `r orange$top_matches$station[1]` / `r orange$top_matches$show[1]`
+#### `r orange$top_matches$station[10]` / `r orange$top_matches$show[10]`
 
-<`r orange$top_matches$preview_url[1]`>
+<`r orange$top_matches$preview_url[10]`>
 
-`r htmltools::HTML(sprintf("<img src='%s'/>", orange$top_matches$preview_thumb[1]))`
+`r htmltools::HTML(sprintf("<img src='%s'/>", orange$top_matches$preview_thumb[10]))`
 
->"`r gsub('trump', '🍊', orange$top_matches$snippet[1], ignore.case=TRUE)`"
+>"`r gsub('trump', '🍊', orange$top_matches$snippet[10], ignore.case=TRUE)`"
 
 ### Test Results
 

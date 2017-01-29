@@ -10,10 +10,11 @@
 #' @importFrom lubridate ymd_hms
 #' @importFrom tidyr unnest
 #' @importFrom dplyr tbl_df %>% mutate data_frame count as_data_frame select
-#' @importFrom purrr map_df
+#' @importFrom purrr map_df %||%
 #' @importFrom jsonlite fromJSON
 #' @importFrom DT datatable
 #' @importFrom scales comma
 #' @importFrom txtplot txtbarchart
 #' @importFrom tidytext unnest_tokens
+#' @importFrom curl curl_fetch_memory
 NULL

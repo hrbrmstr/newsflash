@@ -26,5 +26,6 @@ Imports:
     DT,
     scales,
     purrr,
-    tidytext
+    tidytext,
+    curl
 RoxygenNote: 5.0.1
