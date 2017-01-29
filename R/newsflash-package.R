@@ -7,7 +7,7 @@
 #' @importFrom rvest html_nodes html_attr html_text
 #' @importFrom stringi stri_match_all_regex
 #' @importFrom xml2 read_html
-#' @importFrom anytime anytime
+#' @importFrom lubridate ymd_hms
 #' @importFrom tidyr unnest
 #' @importFrom dplyr tbl_df %>% mutate data_frame count as_data_frame select
 #' @importFrom purrr map_df
