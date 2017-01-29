@@ -1,3 +1,6 @@
+0.3.1 
+* sub out `anytime` for `lubridate` to handle hour resolution in `top_matches`
+
 0.3.0
 * `top_text()` returns a tidy data frame by default
 

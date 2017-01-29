@@ -63,7 +63,7 @@ head(top_text(query_tv("cheese", filter_network="AFFNETALL"), tidy=FALSE))
 
 You can, of course, do other things with the various bits of data returned:
 
-```{r cache=TRUE}
+```{r}
 orange <- query_tv("trump")
 ```
 
@@ -82,7 +82,7 @@ arrange(orange$station_histogram, value) %>%
 ```{r fig.height=6, fig.retina=2}
 ggplot(orange$timeline, aes(date_start, value)) +
   geom_area(aes(group=station, fill=station), position="stack") +
-  scale_x_datetime(name=NULL, expand=c(0,0)) +
+  scale_x_date(name=NULL, expand=c(0,0)) +
   scale_y_continuous(name="# Mentions", label=scales::comma, limits=c(0, 8000), expand=c(0,0)) +
   ggthemes::scale_fill_tableau(name=NULL) +
   labs(title="Timeline") +

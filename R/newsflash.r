@@ -111,15 +111,15 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
   res$query_details <- dplyr::tbl_df(res$query_details)
 
   res$timeline <- tidyr::unnest(res$timeline, station_values) %>%
-    dplyr::mutate(date_start=anytime::anytime(date_start),
-                  date_end=anytime::anytime(date_end)) %>%
+    dplyr::mutate(date_start=as.Date(lubridate::ymd_hms(date_start)),
+                  date_end=as.Date(lubridate::ymd_hms(date_end))) %>%
     dplyr::tbl_df()
 
   res$station_histogram <- dplyr::tbl_df(res$station_histogram)
 
   res$top_matches <- dplyr::tbl_df(res$top_matches) %>%
-    dplyr::mutate(date=anytime::anytime(date),
-                  show_date=anytime::anytime(show_date))
+    dplyr::mutate(date=as.Date(lubridate::ymd_hms(date)),
+                  show_date=lubridate::ymd_hms(show_date))
 
   class(res) <- c("newsflash", class(res))
 

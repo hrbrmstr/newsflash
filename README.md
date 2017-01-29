@@ -36,7 +36,7 @@ library(hrbrmisc)
 packageVersion("newsflash")
 ```
 
-    ## [1] '0.3.0'
+    ## [1] '0.3.1'
 
 See what networks & associated corpus date ranges are available:
 
@@ -49,21 +49,21 @@ list_networks(widget=FALSE)
     ##                         <chr>                               <chr>                               <chr>
     ## 1                    NATIONAL               All National Networks (See individual networks for dates)
     ## 2                     ALJAZAM                   Aljazeera America             (8/20/2013 - 4/13/2016)
-    ## 3                   BLOOMBERG                           Bloomberg             (12/5/2013 - 1/25/2017)
-    ## 4                        CNBC                                CNBC              (7/2/2009 - 1/25/2017)
-    ## 5                         CNN                                 CNN              (7/2/2009 - 1/25/2017)
-    ## 6                         FBC                        FOX Business             (8/20/2012 - 1/25/2017)
-    ## 7                    FOXNEWSW                            FOX News             (7/16/2011 - 1/25/2017)
-    ## 8                       MSNBC                               MSNBC              (7/2/2009 - 1/25/2017)
+    ## 3                   BLOOMBERG                           Bloomberg             (12/5/2013 - 1/27/2017)
+    ## 4                        CNBC                                CNBC              (7/2/2009 - 1/27/2017)
+    ## 5                         CNN                                 CNN              (7/2/2009 - 1/27/2017)
+    ## 6                         FBC                        FOX Business             (8/20/2012 - 1/27/2017)
+    ## 7                    FOXNEWSW                            FOX News             (7/16/2011 - 1/27/2017)
+    ## 8                       MSNBC                               MSNBC              (7/2/2009 - 1/26/2017)
     ## 9               INTERNATIONAL          All International Networks (See individual networks for dates)
     ## 10                 BBCNEWSSEG                            BBC News              (1/1/2017 - 1/26/2017)
     ## 11                  AFFNETALL              All Affiliate Networks (See individual networks for dates)
-    ## 12                 AFFNET_ABC              ABC Affiliate Stations              (7/2/2009 - 1/26/2017)
-    ## 13                 AFFNET_CBS              CBS Affiliate Stations              (7/2/2009 - 1/26/2017)
-    ## 14                 AFFNET_FOX              FOX Affiliate Stations              (7/3/2009 - 1/26/2017)
+    ## 12                 AFFNET_ABC              ABC Affiliate Stations              (7/2/2009 - 1/27/2017)
+    ## 13                 AFFNET_CBS              CBS Affiliate Stations              (7/2/2009 - 1/27/2017)
+    ## 14                 AFFNET_FOX              FOX Affiliate Stations              (7/3/2009 - 1/27/2017)
     ## 15                AFFNET_MYTV             MYTV Affiliate Stations            (12/11/2015 - 12/2/2016)
-    ## 16                 AFFNET_NBC              NBC Affiliate Stations              (7/2/2009 - 1/26/2017)
-    ## 17                 AFFNET_PBS              PBS Affiliate Stations             (7/14/2010 - 1/26/2017)
+    ## 16                 AFFNET_NBC              NBC Affiliate Stations              (7/2/2009 - 1/27/2017)
+    ## 17                 AFFNET_PBS              PBS Affiliate Stations             (7/14/2010 - 1/27/2017)
     ## 18                 AFFMARKALL               All Affiliate Markets (See individual networks for dates)
     ## 19           AFFMARKET_Boston           Boston Affiliate Stations             (9/30/2015 - 12/2/2016)
     ## 20     AFFMARKET_Cedar Rapids     Cedar Rapids Affiliate Stations            (10/19/2015 - 12/2/2016)
@@ -86,19 +86,19 @@ list_networks(widget=FALSE)
     ## 37       AFFMARKET_Newport KY       Newport KY Affiliate Stations              (1/6/2016 - 3/23/2016)
     ## 38          AFFMARKET_Norfolk          Norfolk Affiliate Stations               (1/6/2016 - 3/9/2016)
     ## 39          AFFMARKET_Orlando          Orlando Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 40     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations              (6/6/2014 - 1/26/2017)
+    ## 40     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations              (6/6/2014 - 1/27/2017)
     ## 41       AFFMARKET_Portsmouth       Portsmouth Affiliate Stations               (1/6/2016 - 3/9/2016)
     ## 42           AFFMARKET_Pueblo           Pueblo Affiliate Stations              (1/19/2016 - 3/9/2016)
     ## 43          AFFMARKET_Raleigh          Raleigh Affiliate Stations             (1/13/2016 - 12/2/2016)
     ## 44             AFFMARKET_Reno             Reno Affiliate Stations               (1/1/2016 - 3/2/2016)
     ## 45          AFFMARKET_Roanoke          Roanoke Affiliate Stations              (1/26/2016 - 3/1/2016)
-    ## 46    AFFMARKET_San Francisco    San Francisco Affiliate Stations             (7/14/2010 - 1/26/2017)
+    ## 46    AFFMARKET_San Francisco    San Francisco Affiliate Stations             (7/14/2010 - 1/27/2017)
     ## 47   AFFMARKET_Shaker Heights   Shaker Heights Affiliate Stations              (1/6/2016 - 12/2/2016)
     ## 48       AFFMARKET_Sioux City       Sioux City Affiliate Stations             (10/13/2015 - 3/2/2016)
     ## 49   AFFMARKET_St. Petersburg   St. Petersburg Affiliate Stations              (1/6/2016 - 12/2/2016)
     ## 50            AFFMARKET_Tampa            Tampa Affiliate Stations              (1/6/2016 - 12/2/2016)
     ## 51   AFFMARKET_Virginia Beach   Virginia Beach Affiliate Stations               (1/7/2016 - 3/8/2016)
-    ## 52    AFFMARKET_Washington DC    Washington DC Affiliate Stations              (7/2/2009 - 1/26/2017)
+    ## 52    AFFMARKET_Washington DC    Washington DC Affiliate Stations              (7/2/2009 - 1/27/2017)
     ## 53         AFFMARKET_Waterloo         Waterloo Affiliate Stations            (10/19/2015 - 12/2/2016)
 
 Basic search:
@@ -176,18 +176,18 @@ top_text(query_tv("cheese", filter_network="AFFNETALL"))
 ```
 
     ## # A tibble: 40,649 × 4
-    ##                   station                         show  show_date      word
-    ##                     <chr>                        <chr>     <dttm>     <chr>
-    ## 1  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 telephone
-    ## 2  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25     rings
-    ## 3  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25       o.k
-    ## 4  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25       say
-    ## 5  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25    cheese
-    ## 6  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25    cheese
-    ## 7  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25    cheese
-    ## 8  NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25       hmm
-    ## 9  NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25    really
-    ## 10 NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25      what
+    ##                   station                         show           show_date      word
+    ##                     <chr>                        <chr>              <dttm>     <chr>
+    ## 1  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00 telephone
+    ## 2  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00     rings
+    ## 3  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00       o.k
+    ## 4  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00       say
+    ## 5  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00    cheese
+    ## 6  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00    cheese
+    ## 7  NBC - Goldsboro (WNCN) North Carolina News at 530AM 2016-11-25 10:30:00    cheese
+    ## 8  NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25 10:00:00       hmm
+    ## 9  NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25 10:00:00    really
+    ## 10 NBC - Goldsboro (WNCN) North Carolina News at 500AM 2016-11-25 10:00:00      what
     ## # ... with 40,639 more rows
 
 ``` r
@@ -224,7 +224,7 @@ arrange(orange$station_histogram, value) %>%
 ``` r
 ggplot(orange$timeline, aes(date_start, value)) +
   geom_area(aes(group=station, fill=station), position="stack") +
-  scale_x_datetime(name=NULL, expand=c(0,0)) +
+  scale_x_date(name=NULL, expand=c(0,0)) +
   scale_y_continuous(name="# Mentions", label=scales::comma, limits=c(0, 8000), expand=c(0,0)) +
   ggthemes::scale_fill_tableau(name=NULL) +
   labs(title="Timeline") +
@@ -255,7 +255,7 @@ library(testthat)
 date()
 ```
 
-    ## [1] "Fri Jan 27 19:02:24 2017"
+    ## [1] "Sat Jan 28 22:16:43 2017"
 
 ``` r
 test_dir("tests/")
