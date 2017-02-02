@@ -11,4 +11,3 @@ Tools to Work with the Internet Archive and GDELT Television Explorer
 \author{
 Bob Rudis (bob@rud.is)
 }
-

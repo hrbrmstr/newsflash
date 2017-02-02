@@ -12,4 +12,3 @@
 \description{
 Use \code{str()} for an object-level overview.
 }
-

@@ -24,7 +24,8 @@ that you need to check the site to know what it is). If not "\code{all}" then yo
 must specify \code{start_date} and \code{end_date}.}
 
 \item{start_date, end_date}{start/end dates for search if \code{timespan} is
-not "\code{all}". Can be a \code{Date} object or an ISO character date (e.g. \code{2016-11-12}).}
+not "\code{all}". Can be a \code{Date} object or an ISO character date (e.g. \code{2016-11-12}).
+Use "" (empty string) for most current date.}
 }
 \description{
 Successful queries (API errors tend to be date-range related but there
@@ -60,6 +61,7 @@ switch from daily resolution to hourly resolution to make it possible to examine
 coverage of a topic changed over the course of a day and when each network first started
 discussing it.
 }
+
 \examples{
 query_tv("terror", "isis")
 query_tv("british prime minister")
@@ -68,4 +70,3 @@ query_tv("mexican president")
 \references{
 \url{http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch}
 }
-

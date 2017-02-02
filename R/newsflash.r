@@ -59,6 +59,7 @@ nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNE
 #'    must specify \code{start_date} and \code{end_date}.
 #' @param start_date,end_date start/end dates for search if \code{timespan} is
 #'    not "\code{all}". Can be a \code{Date} object or an ISO character date (e.g. \code{2016-11-12}).
+#'    Use "" (empty string) for most current date.
 #' @references \url{http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch}
 #' @export
 #' @examples
@@ -72,15 +73,32 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
 
   if (is.null(timespan) | (tolower(timespan) != "all")) {
 
-    if (is.null(start_date) | is.null(end_date)) {
+    if (is.null(start_date) & is.null(end_date)) {
 
-      message("timespan was not 'all' but no start/end date(s) were specified. Defaulting to 'all'.")
+      message("timespan was not 'all' but neither start nor end date were not specified. Defaulting to 'all'.")
       timespan <- "all"
 
     } else {
 
-      start_date <- format(as.Date(start_date), "%m/%d/%Y")
-      end_date <- format(as.Date(end_date), "%m/%d/%Y")
+      if (!is.null(start_date)) {
+        start_date <- map_chr(start_date, function(x) {
+          if ((is.character(x) && (x != "")) | inherits(x, "Date")) {
+            format(as.Date(x), "%m/%d/%Y")
+          } else {
+            x
+          }
+        })
+      }
+
+      if (!is.null(end_date)) {
+        end_date <- map_chr(end_date, function(x) {
+          if ((is.character(x) && (x != "")) | inherits(x, "Date")) {
+            format(as.Date(x), "%m/%d/%Y")
+          } else {
+            x
+          }
+        })
+      }
 
     }
 
@@ -117,10 +135,13 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
   }
 
   res$content <- res$content[res$content != as.raw(0x00)]
+  res$content <- rawToChar(res$content)
+  res$content <- stri_replace_all_regex(res$content, "\\\\([[:alpha:] ]+)", "$1")
 
-  rc <- rawConnection(res$content)
-  out <- jsonlite::fromJSON(rc)
-  close(rc)
+  out <- jsonlite::fromJSON(res$content)
+  # rc <- rawConnection(res$content)
+  # out <- jsonlite::fromJSON(rc)
+  # close(rc)
 
   if (length(out) == 1) {
     message("No results found")

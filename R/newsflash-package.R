@@ -5,9 +5,9 @@
 #' @author Bob Rudis (bob@@rud.is)
 #' @import httr
 #' @importFrom rvest html_nodes html_attr html_text
-#' @importFrom stringi stri_match_all_regex
+#' @importFrom stringi stri_match_all_regex stri_replace_all_regex
 #' @importFrom xml2 read_html
-#' @importFrom lubridate ymd_hms
+#' @importFrom lubridate ymd_hms is.Date
 #' @importFrom tidyr unnest
 #' @importFrom dplyr tbl_df %>% mutate data_frame count as_data_frame select
 #' @importFrom purrr map_df %||%

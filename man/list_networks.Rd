@@ -21,4 +21,3 @@ the console by passing in \code{widget=FALSE}
 list_networks() # widget
 list_networks(FALSE) # console
 }
-

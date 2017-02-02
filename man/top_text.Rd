@@ -22,4 +22,3 @@ tibble or plain character vector
 brexit <- query_tv("brexit", start_date=as.Date("2016-01-01"), end_date=as.Date("2016-12-31"))
 top_text(brexit)
 }
-
