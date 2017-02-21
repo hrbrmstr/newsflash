@@ -33,14 +33,14 @@ options(width=120)
 ``` r
 library(newsflash)
 library(tidyverse)
-library(ggalt) # github version
-library(hrbrmisc)
+library(ggalt)
+library(hrbrthemes) # github 
 
 # current verison
 packageVersion("newsflash")
 ```
 
-    ## [1] '0.4.0'
+    ## [1] '0.4.1'
 
 See what networks & associated corpus date ranges are available:
 
@@ -53,21 +53,21 @@ list_networks(widget=FALSE)
     ##                         <chr>                               <chr>                               <chr>
     ## 1                    NATIONAL               All National Networks (See individual networks for dates)
     ## 2                     ALJAZAM                   Aljazeera America             (8/20/2013 - 4/13/2016)
-    ## 3                   BLOOMBERG                           Bloomberg             (12/5/2013 - 1/28/2017)
-    ## 4                        CNBC                                CNBC              (7/2/2009 - 1/28/2017)
-    ## 5                         CNN                                 CNN              (7/2/2009 - 1/28/2017)
-    ## 6                         FBC                        FOX Business             (8/20/2012 - 1/28/2017)
-    ## 7                    FOXNEWSW                            FOX News             (7/16/2011 - 1/28/2017)
-    ## 8                       MSNBC                               MSNBC              (7/2/2009 - 1/27/2017)
+    ## 3                   BLOOMBERG                           Bloomberg             (12/5/2013 - 2/16/2017)
+    ## 4                        CNBC                                CNBC              (7/2/2009 - 2/16/2017)
+    ## 5                         CNN                                 CNN              (7/2/2009 - 2/16/2017)
+    ## 6                         FBC                        FOX Business             (8/20/2012 - 2/16/2017)
+    ## 7                    FOXNEWSW                            FOX News             (7/16/2011 - 2/16/2017)
+    ## 8                       MSNBC                               MSNBC              (7/2/2009 - 2/16/2017)
     ## 9               INTERNATIONAL          All International Networks (See individual networks for dates)
-    ## 10                 BBCNEWSSEG                            BBC News              (1/1/2017 - 1/28/2017)
+    ## 10                 BBCNEWSSEG                            BBC News              (1/1/2017 - 2/15/2017)
     ## 11                  AFFNETALL              All Affiliate Networks (See individual networks for dates)
-    ## 12                 AFFNET_ABC              ABC Affiliate Stations              (7/2/2009 - 1/28/2017)
-    ## 13                 AFFNET_CBS              CBS Affiliate Stations              (7/2/2009 - 1/28/2017)
-    ## 14                 AFFNET_FOX              FOX Affiliate Stations              (7/3/2009 - 1/28/2017)
+    ## 12                 AFFNET_ABC              ABC Affiliate Stations              (7/2/2009 - 2/16/2017)
+    ## 13                 AFFNET_CBS              CBS Affiliate Stations              (7/2/2009 - 2/16/2017)
+    ## 14                 AFFNET_FOX              FOX Affiliate Stations              (7/3/2009 - 2/16/2017)
     ## 15                AFFNET_MYTV             MYTV Affiliate Stations            (12/11/2015 - 12/2/2016)
-    ## 16                 AFFNET_NBC              NBC Affiliate Stations              (7/2/2009 - 1/28/2017)
-    ## 17                 AFFNET_PBS              PBS Affiliate Stations             (7/14/2010 - 1/28/2017)
+    ## 16                 AFFNET_NBC              NBC Affiliate Stations              (7/2/2009 - 2/16/2017)
+    ## 17                 AFFNET_PBS              PBS Affiliate Stations             (7/14/2010 - 2/16/2017)
     ## 18                 AFFMARKALL               All Affiliate Markets (See individual networks for dates)
     ## 19           AFFMARKET_Boston           Boston Affiliate Stations             (9/30/2015 - 12/2/2016)
     ## 20     AFFMARKET_Cedar Rapids     Cedar Rapids Affiliate Stations            (10/19/2015 - 12/2/2016)
@@ -90,19 +90,19 @@ list_networks(widget=FALSE)
     ## 37       AFFMARKET_Newport KY       Newport KY Affiliate Stations              (1/6/2016 - 3/23/2016)
     ## 38          AFFMARKET_Norfolk          Norfolk Affiliate Stations               (1/6/2016 - 3/9/2016)
     ## 39          AFFMARKET_Orlando          Orlando Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 40     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations              (6/6/2014 - 1/28/2017)
+    ## 40     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations              (6/6/2014 - 2/16/2017)
     ## 41       AFFMARKET_Portsmouth       Portsmouth Affiliate Stations               (1/6/2016 - 3/9/2016)
     ## 42           AFFMARKET_Pueblo           Pueblo Affiliate Stations              (1/19/2016 - 3/9/2016)
     ## 43          AFFMARKET_Raleigh          Raleigh Affiliate Stations             (1/13/2016 - 12/2/2016)
     ## 44             AFFMARKET_Reno             Reno Affiliate Stations               (1/1/2016 - 3/2/2016)
     ## 45          AFFMARKET_Roanoke          Roanoke Affiliate Stations              (1/26/2016 - 3/1/2016)
-    ## 46    AFFMARKET_San Francisco    San Francisco Affiliate Stations             (7/14/2010 - 1/28/2017)
+    ## 46    AFFMARKET_San Francisco    San Francisco Affiliate Stations             (7/14/2010 - 2/16/2017)
     ## 47   AFFMARKET_Shaker Heights   Shaker Heights Affiliate Stations              (1/6/2016 - 12/2/2016)
     ## 48       AFFMARKET_Sioux City       Sioux City Affiliate Stations             (10/13/2015 - 3/2/2016)
     ## 49   AFFMARKET_St. Petersburg   St. Petersburg Affiliate Stations              (1/6/2016 - 12/2/2016)
     ## 50            AFFMARKET_Tampa            Tampa Affiliate Stations              (1/6/2016 - 12/2/2016)
     ## 51   AFFMARKET_Virginia Beach   Virginia Beach Affiliate Stations               (1/7/2016 - 3/8/2016)
-    ## 52    AFFMARKET_Washington DC    Washington DC Affiliate Stations              (7/2/2009 - 1/27/2017)
+    ## 52    AFFMARKET_Washington DC    Washington DC Affiliate Stations              (7/2/2009 - 2/16/2017)
     ## 53         AFFMARKET_Waterloo         Waterloo Affiliate Stations            (10/19/2015 - 12/2/2016)
 
 Basic search:
@@ -112,13 +112,13 @@ query_tv("clinton", "email", "AFFMARKALL")
 ```
 
     ## Query:
-    ##    Primary keyword:  
+    ##    Primary keyword: clinton 
     ##   Context keywords: email 
     ##           Stations: AFFMARKALL 
     ##         Start date: 2009-06-03 
-    ##           End date: 2017-01-27 
+    ##           End date: 2017-02-16 
     ## 
-    ## 229,108 timeline results from 82 stations:
+    ## 230,748 timeline results from 82 stations:
     ## 
     ##   +--+--------------------+------------------*-+--------------------+-------------------+------+
     ## 8 +                                          *                                             *   +
@@ -157,7 +157,7 @@ query_tv("clinton", "email", "AFFMARKALL")
     ## 
     ## 2,500 top query matches from the following shows:
     ## 
-    ## Source: local data frame [475 x 3]
+    ## Source: local data frame [476 x 3]
     ## Groups: station [69]
     ## 
     ##                       station                            show     n
@@ -172,7 +172,7 @@ query_tv("clinton", "email", "AFFMARKALL")
     ## 8  CBS - San Francisco (KPIX)      KPIX 5 News  Early Edition    33
     ## 9   ABC - Philadelphia (WPVI)          Action News at 1230 PM    32
     ## 10         FOX - Tampa (WTVT)         Good Day Tampa Bay  9AM    31
-    ## # ... with 465 more rows
+    ## # ... with 466 more rows
 
 The closed-caption text snippets are returned for the "top matches" (usually max 2,500 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
 
@@ -181,7 +181,7 @@ mex <- query_tv("mexican president", filter_network="NATIONAL")
 top_text(mex)
 ```
 
-    ## # A tibble: 183,676 × 4
+    ## # A tibble: 197,168 × 4
     ##    station         show           show_date   word
     ##      <chr>        <chr>              <dttm>  <chr>
     ## 1     CNBC Street Signs 2016-09-30 08:00:00      i
@@ -194,7 +194,7 @@ top_text(mex)
     ## 8     CNBC Street Signs 2016-09-30 08:00:00     of
     ## 9     CNBC Street Signs 2016-09-30 08:00:00  times
     ## 10    CNBC Street Signs 2016-09-30 08:00:00     he
-    ## # ... with 183,666 more rows
+    ## # ... with 197,158 more rows
 
 ``` r
 head(top_text(mex, tidy=FALSE))
@@ -222,7 +222,7 @@ arrange(orange$station_histogram, value) %>%
   scale_x_continuous(expand=c(0,0), label=scales::comma, limits=c(0,400000)) +
   labs(y=NULL, x="# Mentions",
        title="Station Histogram") +
-  theme_hrbrmstr_msc(grid="X")
+  theme_ipsum_rc(grid="X")
 ```
 
 <img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" width="672" />
@@ -236,7 +236,7 @@ mutate(orange$timeline, date_start=as.Date(date_start)) %>%
   scale_y_continuous(name="# Mentions", label=scales::comma, limits=c(0, 8000), expand=c(0,0)) +
   ggthemes::scale_fill_tableau(name=NULL) +
   labs(title="Timeline") +
-  theme_hrbrmstr_msc(grid="XY") +
+  theme_ipsum_rc(grid="XY") +
   theme(legend.position="bottom") +
   theme(axis.text.x=element_text(hjust=c(0, 0.5, 0.5, 0.5, 0.5, 0.5)))
 ```
@@ -263,7 +263,7 @@ library(testthat)
 date()
 ```
 
-    ## [1] "Sun Jan 29 16:02:13 2017"
+    ## [1] "Mon Feb 20 10:02:25 2017"
 
 ``` r
 test_dir("tests/")

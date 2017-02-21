@@ -36,8 +36,8 @@ options(width=120)
 ```{r message=FALSE, warning=FALSE, error=FALSE}
 library(newsflash)
 library(tidyverse)
-library(ggalt) # github version
-library(hrbrmisc)
+library(ggalt)
+library(hrbrthemes) # github 
 
 # current verison
 packageVersion("newsflash")
@@ -81,7 +81,7 @@ arrange(orange$station_histogram, value) %>%
   scale_x_continuous(expand=c(0,0), label=scales::comma, limits=c(0,400000)) +
   labs(y=NULL, x="# Mentions",
        title="Station Histogram") +
-  theme_hrbrmstr_msc(grid="X")
+  theme_ipsum_rc(grid="X")
 ```
 
 ```{r warning=FALSE, message=FALSE, fig.height=6, fig.retina=2}
@@ -93,7 +93,7 @@ mutate(orange$timeline, date_start=as.Date(date_start)) %>%
   scale_y_continuous(name="# Mentions", label=scales::comma, limits=c(0, 8000), expand=c(0,0)) +
   ggthemes::scale_fill_tableau(name=NULL) +
   labs(title="Timeline") +
-  theme_hrbrmstr_msc(grid="XY") +
+  theme_ipsum_rc(grid="XY") +
   theme(legend.position="bottom") +
   theme(axis.text.x=element_text(hjust=c(0, 0.5, 0.5, 0.5, 0.5, 0.5)))
 ```
