@@ -71,7 +71,7 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
                      timespan="ALL",
                      start_date=NULL, end_date=NULL) {
 
-  if (is.null(timespan) | (tolower(timespan) != "all")) {
+  if (is.null(timespan) || (tolower(timespan) != "all")) {
 
     if (is.null(start_date) & is.null(end_date)) {
 
