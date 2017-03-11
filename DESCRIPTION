@@ -1,12 +1,16 @@
 Package: newsflash
 Type: Package
-Title: Tools to Work with the Internet Archive and GDELT Television Explorer
-Version: 0.4.1
-Date: 2017-02-12
-Author: Bob Rudis (bob@@rud.is)
+Title: Tools to Work with the 'Internet Archive' and 'GDELT' Television Explorer
+Version: 0.4.2
+Date: 2017-03-11
+Authors@R: c(
+      person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"))
+    )
 Maintainer: Bob Rudis <bob@rud.is>
-Description: Tools to Work with the Internet Archive and GDELT Television
-    Explorer
+Description: The 'GDELT' Television Explorer (<http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch>) 
+    provides a simple and straighforward interface for searching through current and historical
+    closed-caption records from television news sources all across the globe. Functions are
+    provided to query and tidy this data for more in-depth analyses.
 URL: https://github.com/hrbrmstr/newsflash
 BugReports: https://github.com/hrbrmstr/newsflash/issues
 License: AGPL
@@ -29,4 +33,4 @@ Imports:
     tidytext,
     curl,
     txtplot
-RoxygenNote: 6.0.0
+RoxygenNote: 6.0.1
