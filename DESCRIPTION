@@ -4,7 +4,8 @@ Title: Tools to Work with the 'Internet Archive' and 'GDELT' Television Explorer
 Version: 0.4.2
 Date: 2017-03-11
 Authors@R: c(
-      person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"))
+      person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")),
+      person("Abe", "Neuwirth", role = c("ctb"))
     )
 Maintainer: Bob Rudis <bob@rud.is>
 Description: The 'GDELT' Television Explorer (<http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch>) 
