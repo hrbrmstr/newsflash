@@ -84,7 +84,7 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
         start_date <- map_chr(start_date, function(x) {
           if ((is.character(x) && (x != "")) | inherits(x, "Date")) {
             format(as.Date(x), "%m/%d/%Y")
-          } else {
+          } else { 
             x
           }
         })
@@ -117,7 +117,7 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
 
   query$context_keywords <- gsub(" ", "+", query$context_keywords)
 
-  if (tolower(timespan) == "all") {
+  if (!is.null(timespan) && tolower(timespan) == "all") {
     query$filter_timespan <- "ALL"
   } else {
     query$filter_timespan <- "CUSTOM"
