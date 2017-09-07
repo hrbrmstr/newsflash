@@ -16,6 +16,7 @@ The following functions are implemented:
 -   `query_tv`: Issue a query to the TV Explorer
 -   `top_text`: Helper function to extract the text snippets from the top matches as a tidytext-compatible tibble or plain character vector
 -   `list_networks`: Helper function to identify station/network keyword and corpus date range for said market
+-   `top_trending`: Top Trending Tables
 -   `print.newsflash`: Helper print method for a nicer default text summary
 
 ### Installation
@@ -34,13 +35,13 @@ options(width=120)
 library(newsflash)
 library(tidyverse)
 library(ggalt)
-library(hrbrthemes) # github 
+library(hrbrthemes)
 
 # current verison
 packageVersion("newsflash")
 ```
 
-    ## [1] '0.4.1'
+    ## [1] '0.5.0'
 
 See what networks & associated corpus date ranges are available:
 
@@ -48,62 +49,65 @@ See what networks & associated corpus date ranges are available:
 list_networks(widget=FALSE)
 ```
 
-    ## # A tibble: 53 × 3
+    ## # A tibble: 56 x 3
     ##                       keyword                             network                          date_range
     ##                         <chr>                               <chr>                               <chr>
-    ## 1                    NATIONAL               All National Networks (See individual networks for dates)
-    ## 2                     ALJAZAM                   Aljazeera America             (8/20/2013 - 4/13/2016)
-    ## 3                   BLOOMBERG                           Bloomberg             (12/5/2013 - 2/16/2017)
-    ## 4                        CNBC                                CNBC              (7/2/2009 - 2/16/2017)
-    ## 5                         CNN                                 CNN              (7/2/2009 - 2/16/2017)
-    ## 6                         FBC                        FOX Business             (8/20/2012 - 2/16/2017)
-    ## 7                    FOXNEWSW                            FOX News             (7/16/2011 - 2/16/2017)
-    ## 8                       MSNBC                               MSNBC              (7/2/2009 - 2/16/2017)
-    ## 9               INTERNATIONAL          All International Networks (See individual networks for dates)
-    ## 10                 BBCNEWSSEG                            BBC News              (1/1/2017 - 2/15/2017)
-    ## 11                  AFFNETALL              All Affiliate Networks (See individual networks for dates)
-    ## 12                 AFFNET_ABC              ABC Affiliate Stations              (7/2/2009 - 2/16/2017)
-    ## 13                 AFFNET_CBS              CBS Affiliate Stations              (7/2/2009 - 2/16/2017)
-    ## 14                 AFFNET_FOX              FOX Affiliate Stations              (7/3/2009 - 2/16/2017)
-    ## 15                AFFNET_MYTV             MYTV Affiliate Stations            (12/11/2015 - 12/2/2016)
-    ## 16                 AFFNET_NBC              NBC Affiliate Stations              (7/2/2009 - 2/16/2017)
-    ## 17                 AFFNET_PBS              PBS Affiliate Stations             (7/14/2010 - 2/16/2017)
-    ## 18                 AFFMARKALL               All Affiliate Markets (See individual networks for dates)
-    ## 19           AFFMARKET_Boston           Boston Affiliate Stations             (9/30/2015 - 12/2/2016)
-    ## 20     AFFMARKET_Cedar Rapids     Cedar Rapids Affiliate Stations            (10/19/2015 - 12/2/2016)
-    ## 21        AFFMARKET_Charlotte        Charlotte Affiliate Stations              (2/9/2016 - 3/23/2016)
-    ## 22       AFFMARKET_Cincinnati       Cincinnati Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 23        AFFMARKET_Cleveland        Cleveland Affiliate Stations              (1/6/2016 - 12/2/2016)
-    ## 24 AFFMARKET_Colorado Springs Colorado Springs Affiliate Stations              (1/19/2016 - 3/9/2016)
-    ## 25         AFFMARKET_Columbia         Columbia Affiliate Stations             (12/28/2015 - 3/2/2016)
-    ## 26  AFFMARKET_Dakota Dunes SD  Dakota Dunes SD Affiliate Stations             (10/13/2015 - 3/2/2016)
-    ## 27    AFFMARKET_Daytona Beach    Daytona Beach Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 28           AFFMARKET_Denver           Denver Affiliate Stations              (1/1/2016 - 12/2/2016)
-    ## 29       AFFMARKET_Des Moines       Des Moines Affiliate Stations             (10/14/2015 - 3/2/2016)
-    ## 30           AFFMARKET_Durham           Durham Affiliate Stations             (1/13/2016 - 3/23/2016)
-    ## 31        AFFMARKET_Goldsboro        Goldsboro Affiliate Stations             (1/13/2016 - 12/2/2016)
-    ## 32       AFFMARKET_Greenville       Greenville Affiliate Stations             (12/28/2015 - 3/2/2016)
-    ## 33          AFFMARKET_Hampton          Hampton Affiliate Stations               (1/6/2016 - 3/9/2016)
-    ## 34        AFFMARKET_Las Vegas        Las Vegas Affiliate Stations            (12/11/2015 - 12/2/2016)
-    ## 35        AFFMARKET_Lynchburg        Lynchburg Affiliate Stations              (1/26/2016 - 3/1/2016)
-    ## 36            AFFMARKET_Miami            Miami Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 37       AFFMARKET_Newport KY       Newport KY Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 38          AFFMARKET_Norfolk          Norfolk Affiliate Stations               (1/6/2016 - 3/9/2016)
-    ## 39          AFFMARKET_Orlando          Orlando Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 40     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations              (6/6/2014 - 2/16/2017)
-    ## 41       AFFMARKET_Portsmouth       Portsmouth Affiliate Stations               (1/6/2016 - 3/9/2016)
-    ## 42           AFFMARKET_Pueblo           Pueblo Affiliate Stations              (1/19/2016 - 3/9/2016)
-    ## 43          AFFMARKET_Raleigh          Raleigh Affiliate Stations             (1/13/2016 - 12/2/2016)
-    ## 44             AFFMARKET_Reno             Reno Affiliate Stations               (1/1/2016 - 3/2/2016)
-    ## 45          AFFMARKET_Roanoke          Roanoke Affiliate Stations              (1/26/2016 - 3/1/2016)
-    ## 46    AFFMARKET_San Francisco    San Francisco Affiliate Stations             (7/14/2010 - 2/16/2017)
-    ## 47   AFFMARKET_Shaker Heights   Shaker Heights Affiliate Stations              (1/6/2016 - 12/2/2016)
-    ## 48       AFFMARKET_Sioux City       Sioux City Affiliate Stations             (10/13/2015 - 3/2/2016)
-    ## 49   AFFMARKET_St. Petersburg   St. Petersburg Affiliate Stations              (1/6/2016 - 12/2/2016)
-    ## 50            AFFMARKET_Tampa            Tampa Affiliate Stations              (1/6/2016 - 12/2/2016)
-    ## 51   AFFMARKET_Virginia Beach   Virginia Beach Affiliate Stations               (1/7/2016 - 3/8/2016)
-    ## 52    AFFMARKET_Washington DC    Washington DC Affiliate Stations              (7/2/2009 - 2/16/2017)
-    ## 53         AFFMARKET_Waterloo         Waterloo Affiliate Stations            (10/19/2015 - 12/2/2016)
+    ##  1                   NATIONAL               All National Networks (See individual networks for dates)
+    ##  2                  BLOOMBERG                           Bloomberg              (12/5/2013 - 9/7/2017)
+    ##  3                       CNBC                                CNBC               (7/2/2009 - 9/7/2017)
+    ##  4                        CNN                                 CNN               (7/2/2009 - 9/7/2017)
+    ##  5                        FBC                        FOX Business              (8/20/2012 - 9/7/2017)
+    ##  6                   FOXNEWSW                            FOX News              (7/16/2011 - 9/7/2017)
+    ##  7                      MSNBC                               MSNBC               (7/2/2009 - 9/7/2017)
+    ##  8              INTERNATIONAL          All International Networks (See individual networks for dates)
+    ##  9                 BBCNEWSSEG                            BBC News               (1/1/2017 - 9/7/2017)
+    ## 10       NATIONALDISCONTINUED  All Discontinued National Networks (See individual networks for dates)
+    ## 11                    ALJAZAM                   Aljazeera America             (8/20/2013 - 4/13/2016)
+    ## 12                        ALL           All Combined All Networks (See individual networks for dates)
+    ## 13                        ALL                                <NA>                                <NA>
+    ## 14                  AFFNETALL              All Affiliate Networks (See individual networks for dates)
+    ## 15                 AFFNET_ABC              ABC Affiliate Stations               (7/2/2009 - 9/7/2017)
+    ## 16                 AFFNET_CBS              CBS Affiliate Stations               (7/2/2009 - 9/7/2017)
+    ## 17                 AFFNET_FOX              FOX Affiliate Stations               (7/3/2009 - 9/7/2017)
+    ## 18                AFFNET_MYTV             MYTV Affiliate Stations            (12/11/2015 - 12/2/2016)
+    ## 19                 AFFNET_NBC              NBC Affiliate Stations               (7/2/2009 - 9/7/2017)
+    ## 20                 AFFNET_PBS              PBS Affiliate Stations              (7/14/2010 - 9/7/2017)
+    ## 21                 AFFMARKALL               All Affiliate Markets (See individual networks for dates)
+    ## 22           AFFMARKET_Boston           Boston Affiliate Stations             (9/30/2015 - 12/2/2016)
+    ## 23     AFFMARKET_Cedar Rapids     Cedar Rapids Affiliate Stations            (10/19/2015 - 12/2/2016)
+    ## 24        AFFMARKET_Charlotte        Charlotte Affiliate Stations              (2/9/2016 - 3/23/2016)
+    ## 25       AFFMARKET_Cincinnati       Cincinnati Affiliate Stations              (1/6/2016 - 3/23/2016)
+    ## 26        AFFMARKET_Cleveland        Cleveland Affiliate Stations              (1/6/2016 - 12/2/2016)
+    ## 27 AFFMARKET_Colorado Springs Colorado Springs Affiliate Stations              (1/19/2016 - 3/9/2016)
+    ## 28         AFFMARKET_Columbia         Columbia Affiliate Stations             (12/28/2015 - 3/2/2016)
+    ## 29  AFFMARKET_Dakota Dunes SD  Dakota Dunes SD Affiliate Stations             (10/13/2015 - 3/2/2016)
+    ## 30    AFFMARKET_Daytona Beach    Daytona Beach Affiliate Stations              (1/6/2016 - 3/23/2016)
+    ## 31           AFFMARKET_Denver           Denver Affiliate Stations              (1/1/2016 - 12/2/2016)
+    ## 32       AFFMARKET_Des Moines       Des Moines Affiliate Stations             (10/14/2015 - 3/2/2016)
+    ## 33           AFFMARKET_Durham           Durham Affiliate Stations             (1/13/2016 - 3/23/2016)
+    ## 34        AFFMARKET_Goldsboro        Goldsboro Affiliate Stations             (1/13/2016 - 12/2/2016)
+    ## 35       AFFMARKET_Greenville       Greenville Affiliate Stations             (12/28/2015 - 3/2/2016)
+    ## 36          AFFMARKET_Hampton          Hampton Affiliate Stations               (1/6/2016 - 3/9/2016)
+    ## 37        AFFMARKET_Las Vegas        Las Vegas Affiliate Stations            (12/11/2015 - 12/2/2016)
+    ## 38        AFFMARKET_Lynchburg        Lynchburg Affiliate Stations              (1/26/2016 - 3/1/2016)
+    ## 39            AFFMARKET_Miami            Miami Affiliate Stations              (1/6/2016 - 3/23/2016)
+    ## 40       AFFMARKET_Newport KY       Newport KY Affiliate Stations              (1/6/2016 - 3/23/2016)
+    ## 41          AFFMARKET_Norfolk          Norfolk Affiliate Stations               (1/6/2016 - 3/9/2016)
+    ## 42          AFFMARKET_Orlando          Orlando Affiliate Stations              (1/6/2016 - 3/23/2016)
+    ## 43     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations               (6/6/2014 - 9/7/2017)
+    ## 44       AFFMARKET_Portsmouth       Portsmouth Affiliate Stations               (1/6/2016 - 3/9/2016)
+    ## 45           AFFMARKET_Pueblo           Pueblo Affiliate Stations              (1/19/2016 - 3/9/2016)
+    ## 46          AFFMARKET_Raleigh          Raleigh Affiliate Stations             (1/13/2016 - 12/2/2016)
+    ## 47             AFFMARKET_Reno             Reno Affiliate Stations               (1/1/2016 - 3/2/2016)
+    ## 48          AFFMARKET_Roanoke          Roanoke Affiliate Stations              (1/26/2016 - 3/1/2016)
+    ## 49    AFFMARKET_San Francisco    San Francisco Affiliate Stations              (7/14/2010 - 9/7/2017)
+    ## 50   AFFMARKET_Shaker Heights   Shaker Heights Affiliate Stations              (1/6/2016 - 12/2/2016)
+    ## 51       AFFMARKET_Sioux City       Sioux City Affiliate Stations             (10/13/2015 - 3/2/2016)
+    ## 52   AFFMARKET_St. Petersburg   St. Petersburg Affiliate Stations              (1/6/2016 - 12/2/2016)
+    ## 53            AFFMARKET_Tampa            Tampa Affiliate Stations              (1/6/2016 - 12/2/2016)
+    ## 54   AFFMARKET_Virginia Beach   Virginia Beach Affiliate Stations               (1/7/2016 - 3/8/2016)
+    ## 55    AFFMARKET_Washington DC    Washington DC Affiliate Stations               (7/2/2009 - 8/7/2017)
+    ## 56         AFFMARKET_Waterloo         Waterloo Affiliate Stations            (10/19/2015 - 12/2/2016)
 
 Basic search:
 
@@ -115,17 +119,17 @@ query_tv("clinton", "email", "AFFMARKALL")
     ##    Primary keyword: clinton 
     ##   Context keywords: email 
     ##           Stations: AFFMARKALL 
-    ##         Start date: 2009-06-03 
-    ##           End date: 2017-02-16 
+    ##         Start date: 2009-07-02 
+    ##           End date: 2017-09-07 
     ## 
-    ## 230,748 timeline results from 82 stations:
+    ## 245,098 timeline results from 82 stations:
     ## 
     ##   +--+--------------------+------------------*-+--------------------+-------------------+------+
     ## 8 +                                          *                                             *   +
     ## 6 +                                          *                                             *   +
-    ##   |              *          *       *        *                 *                           *   |
-    ## 4 +   * *        *   *      *       *        *                 * *                         *   +
-    ## 2 +   * *        *   *     **     * *        *  **       *     * * **   *  *         * **  *   +
+    ##   |              *                  *        *                 *                           *   |
+    ## 4 +   * *        *          *       *        *                 * *                         *   +
+    ## 2 +   * *        *   *     **       *        *  *        *     * * **   *  *         * **  *   +
     ##   |   *** **   * *   ** *****    *****   *   *******     *** * * * ***  ** ***  **   **** **   |
     ## 0 +--+*******-************************-*************************-************************-**---+
     ##      0                   20                   40                   60                  80       
@@ -157,22 +161,20 @@ query_tv("clinton", "email", "AFFMARKALL")
     ## 
     ## 2,500 top query matches from the following shows:
     ## 
-    ## Source: local data frame [476 x 3]
-    ## Groups: station [69]
-    ## 
+    ## # A tibble: 479 x 3
     ##                       station                            show     n
     ##                         <chr>                           <chr> <int>
-    ## 1  PBS - San Francisco (KQED)                    PBS NewsHour   144
-    ## 2         ABC - Boston (WCVB)          Newscenter 5 Eyeopener    78
-    ## 3  PBS - San Francisco (KQED) Washington Week With Gwen Ifill    50
-    ## 4  CBS - San Francisco (KPIX)              KPIX 5 News at 5PM    43
-    ## 5  CBS - San Francisco (KPIX)              KPIX 5 News at 5AM    38
-    ## 6  CBS - San Francisco (KPIX)            KPIX 5 News at 600PM    38
-    ## 7  CBS - San Francisco (KPIX)              KPIX 5 News at 6AM    37
-    ## 8  CBS - San Francisco (KPIX)      KPIX 5 News  Early Edition    33
-    ## 9   ABC - Philadelphia (WPVI)          Action News at 1230 PM    32
-    ## 10         FOX - Tampa (WTVT)         Good Day Tampa Bay  9AM    31
-    ## # ... with 466 more rows
+    ##  1 PBS - San Francisco (KQED)                    PBS NewsHour   154
+    ##  2        ABC - Boston (WCVB)          Newscenter 5 Eyeopener    74
+    ##  3 PBS - San Francisco (KQED) Washington Week With Gwen Ifill    49
+    ##  4 CBS - San Francisco (KPIX)              KPIX 5 News at 6AM    43
+    ##  5 CBS - San Francisco (KPIX)              KPIX 5 News at 5PM    42
+    ##  6 CBS - San Francisco (KPIX)              KPIX 5 News at 5AM    39
+    ##  7 CBS - San Francisco (KPIX)      KPIX 5 News  Early Edition    38
+    ##  8 CBS - San Francisco (KPIX)            KPIX 5 News at 600PM    35
+    ##  9 PBS - San Francisco (KQED)                    Charlie Rose    33
+    ## 10  ABC - Philadelphia (WPVI)          Action News at 1230 PM    31
+    ## # ... with 469 more rows
 
 The closed-caption text snippets are returned for the "top matches" (usually max 2,500 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
 
@@ -181,30 +183,30 @@ mex <- query_tv("mexican president", filter_network="NATIONAL")
 top_text(mex)
 ```
 
-    ## # A tibble: 197,168 × 4
-    ##    station         show           show_date   word
-    ##      <chr>        <chr>              <dttm>  <chr>
-    ## 1     CNBC Street Signs 2016-09-30 08:00:00      i
-    ## 2     CNBC Street Signs 2016-09-30 08:00:00    had
-    ## 3     CNBC Street Signs 2016-09-30 08:00:00     to
-    ## 4     CNBC Street Signs 2016-09-30 08:00:00  watch
-    ## 5     CNBC Street Signs 2016-09-30 08:00:00     it
-    ## 6     CNBC Street Signs 2016-09-30 08:00:00      a
-    ## 7     CNBC Street Signs 2016-09-30 08:00:00 couple
-    ## 8     CNBC Street Signs 2016-09-30 08:00:00     of
-    ## 9     CNBC Street Signs 2016-09-30 08:00:00  times
-    ## 10    CNBC Street Signs 2016-09-30 08:00:00     he
-    ## # ... with 197,158 more rows
+    ## # A tibble: 200,350 x 4
+    ##    station                    show           show_date         word
+    ##      <chr>                   <chr>              <dttm>        <chr>
+    ##  1   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00         well
+    ##  2   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00          the
+    ##  3   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00   transcript
+    ##  4   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00           of
+    ##  5   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00          the
+    ##  6   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00 conversation
+    ##  7   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00         with
+    ##  8   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00     mexico's
+    ##  9   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00    president
+    ## 10   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00        tells
+    ## # ... with 200,340 more rows
 
 ``` r
 head(top_text(mex, tidy=FALSE))
 ```
 
-    ## [1] "i had to watch it a couple of times. he was nervous. cat got his tongue whatever. trudeau, his neighbor in canada. the mexican president."                                                                                                                                                                                                                                                     
-    ## [2] "selectselected care about the middle east be at the economic ones are understated because we will not have to shift so much capital abroad, everyone wants to buy foreign oil. ashley: the other issue is security. some have been undone or completely scrapped for the current mexican president. something that will not get resolved on this summit. the mexican president will push back."
-    ## [3] "walk in, hey let's get to know each other. that is all he was ever going to do. except he was not consistent. it was never discussed. mexican president."                                                                                                                                                                                                                                      
-    ## [4] "i'm sorry to cut you off. thank you very much. i appreciate you joining us. pint made. former mexican president fox."                                                                                                                                                                                                                                                                          
-    ## [5] "we may have to rename it. it's going to be different. in mexico you can't succeed yourself. get to know him. the new mexican president."                                                                                                                                                                                                                                                       
+    ## [1] "well, the transcript of the conversation with mexico's president tells us so much about the promise and the delivery on that promise. yeah. the best thing that could have happened to president pena nieto. mexicans saw that as the president standing up for the country. mexican president -- mexican president."                                                                          
+    ## [2] "i had to watch it a couple of times. he was nervous. cat got his tongue whatever. trudeau, his neighbor in canada. the mexican president."                                                                                                                                                                                                                                                     
+    ## [3] "selectselected care about the middle east be at the economic ones are understated because we will not have to shift so much capital abroad, everyone wants to buy foreign oil. ashley: the other issue is security. some have been undone or completely scrapped for the current mexican president. something that will not get resolved on this summit. the mexican president will push back."
+    ## [4] "walk in, hey let's get to know each other. that is all he was ever going to do. except he was not consistent. it was never discussed. mexican president."                                                                                                                                                                                                                                      
+    ## [5] "i'm sorry to cut you off. thank you very much. i appreciate you joining us. pint made. former mexican president fox."                                                                                                                                                                                                                                                                          
     ## [6] "we may have to rename it. it's going to be different. in mexico you can't succeed yourself. get to know him. the new mexican president."
 
 You can, of course, do other things with the various bits of data returned:
@@ -225,7 +227,9 @@ arrange(orange$station_histogram, value) %>%
   theme_ipsum_rc(grid="X")
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" width="672" />
+    ## Warning: Removed 2 rows containing missing values (geom_lollipop).
+
+<img src="README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png" width="672" />
 
 ``` r
 mutate(orange$timeline, date_start=as.Date(date_start)) %>% 
@@ -241,7 +245,7 @@ mutate(orange$timeline, date_start=as.Date(date_start)) %>%
   theme(axis.text.x=element_text(hjust=c(0, 0.5, 0.5, 0.5, 0.5, 0.5)))
 ```
 
-<img src="README_files/figure-markdown_github/unnamed-chunk-10-1.png" width="672" />
+<img src="README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-10-1.png" width="672" />
 
 The following is dynamically generated from the query results. View the R Markdown to see the code.
 
@@ -254,6 +258,28 @@ The following is dynamically generated from the query results. View the R Markdo
 
 > "that was part of this. that was a great name, you know. phenomenal. 🍊 people. 🍊 cars."
 
+``` r
+res <- map(13:15, ~{
+  hr <- .x
+  map(c(0,15,30,45), ~top_trending(hour=hr, minute=.x))
+})
+
+flatten(res) %>% 
+  discard(is.null) %>% 
+  map_df(~{
+    list(ts=rep(.x$DateGenerated, length(.x$OverallTrendingTopics)), topic=.x$OverallTrendingTopics)
+  }) %>% 
+  count(topic, sort=TRUE) %>% 
+  mutate(topic=factor(topic, levels=rev(topic))) %>% 
+  ggplot(aes(n, topic)) +
+  geom_segment(aes(xend=0, yend=topic), color="#b2b2b2", size=2) +
+  scale_x_comma() +
+  labs(x=NULL, y=NULL, title="Top Topic From 1300-1500 (GMT) 2017-09-07") +
+  theme_ipsum_rc(grid="X")
+```
+
+<img src="README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png" width="768" />
+
 ### Test Results
 
 ``` r
@@ -263,7 +289,7 @@ library(testthat)
 date()
 ```
 
-    ## [1] "Mon Feb 20 10:02:25 2017"
+    ## [1] "Thu Sep  7 17:11:33 2017"
 
 ``` r
 test_dir("tests/")
