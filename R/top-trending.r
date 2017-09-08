@@ -33,7 +33,7 @@
 #' @export
 #' @examples
 #' top_trending(hour=14, minute=30)
-top_trending <-  function(ymd=Sys.Date(), hour=0:24, minute=c(0,15,30,45)) {
+top_trending <-  function(ymd=Sys.Date(), hour=0:23, minute=c(0,15,30,45)) {
 
   base_url <- "http://data.gdeltproject.org/gdeltv3/iatv_trending/%s%s%s00.tvtrending.v3.15min.json"
 

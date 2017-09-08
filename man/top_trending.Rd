@@ -4,7 +4,7 @@
 \alias{top_trending}
 \title{Top Trending Tables}
 \usage{
-top_trending(ymd = Sys.Date(), hour = 0:24, minute = c(0, 15, 30, 45))
+top_trending(ymd = Sys.Date(), hour = 0:23, minute = c(0, 15, 30, 45))
 }
 \arguments{
 \item{ymd}{a \code{Date} object or a character string in \code{YYYYMMDD} or \code{YYYY-MM-DD} format.
