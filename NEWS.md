@@ -1,5 +1,6 @@
 0.5.0
 * add `top_trending()`
+* add `top_trending_ranged()`
 
 0.4.1
 * add `txtplot` to `DESCRIPTION`; Fixes #2

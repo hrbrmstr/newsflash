@@ -9,8 +9,8 @@
 #' @importFrom xml2 read_html
 #' @importFrom lubridate ymd_hms is.Date
 #' @importFrom tidyr unnest
-#' @importFrom dplyr tbl_df %>% mutate data_frame count as_data_frame select
-#' @importFrom purrr map_df %||% safely
+#' @importFrom dplyr tbl_df %>% mutate data_frame count as_data_frame select progress_estimated
+#' @importFrom purrr map_df %||% safely map discard keep
 #' @importFrom jsonlite fromJSON
 #' @importFrom DT datatable
 #' @importFrom scales comma

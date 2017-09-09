@@ -1,5 +1,7 @@
 ---
 output: rmarkdown::github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 `newsflash` : Tools to Work with the Internet Archive and GDELT Television Explorer
@@ -20,6 +22,7 @@ The following functions are implemented:
 - `top_text`: Helper function to extract the text snippets from the top matches as a tidytext-compatible tibble or plain character vector
 - `list_networks`:	Helper function to identify station/network keyword and corpus date range for said market
 - `top_trending`:	Top Trending Tables
+- `top_trending_ranged`:	Top Trending Tables (**you should use this one**)
 - `print.newsflash`: Helper print method for a nicer default text summary
 
 ### Installation
@@ -110,26 +113,16 @@ The following is dynamically generated from the query results. View the R Markdo
 >"`r gsub('trump', '🍊', orange$top_matches$snippet[10], ignore.case=TRUE)`"
 
 ```{r warning=FALSE, message=FALSE, fig.height=9.5, fig.width=8, fig.retina=2}
-res <- map(13:15, ~{
-  hr <- .x
-  map(c(0,15,30,45), ~top_trending(hour=hr, minute=.x))
-})
+from <- as.POSIXct("2017-09-08 18:00:00")
+to <- as.POSIXct("2017-09-09 06:00:00")
 
-flatten(res) %>% 
-  discard(is.null) %>% 
-  map_df(~{
-    list(ts=rep(.x$DateGenerated, length(.x$OverallTrendingTopics)), topic=.x$OverallTrendingTopics)
-  }) %>% 
-  count(topic, sort=TRUE) %>% 
-  mutate(topic=factor(topic, levels=rev(topic))) %>% 
-  ggplot(aes(n, topic)) +
-  geom_segment(aes(xend=0, yend=topic), color="#b2b2b2", size=2) +
-  scale_x_comma() +
-  labs(x=NULL, y=NULL, title="Top Topic From 1300-1500 (GMT) 2017-09-07") +
-  theme_ipsum_rc(grid="X")
+tops <- top_trending_range(from, to)
+
+rev(tail(sort(table(unlist(tops$overall_trending_phrases))), 20))
 ```
 
-### Test Results
+
+## Test Results
 
 ```{r message=FALSE, warning=FALSE, error=FALSE}
 library(newsflash)

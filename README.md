@@ -17,6 +17,7 @@ The following functions are implemented:
 -   `top_text`: Helper function to extract the text snippets from the top matches as a tidytext-compatible tibble or plain character vector
 -   `list_networks`: Helper function to identify station/network keyword and corpus date range for said market
 -   `top_trending`: Top Trending Tables
+-   `top_trending_ranged`: Top Trending Tables (**you should use this one**)
 -   `print.newsflash`: Helper print method for a nicer default text summary
 
 ### Installation
@@ -53,25 +54,25 @@ list_networks(widget=FALSE)
     ##                       keyword                             network                          date_range
     ##                         <chr>                               <chr>                               <chr>
     ##  1                   NATIONAL               All National Networks (See individual networks for dates)
-    ##  2                  BLOOMBERG                           Bloomberg              (12/5/2013 - 9/7/2017)
-    ##  3                       CNBC                                CNBC               (7/2/2009 - 9/7/2017)
-    ##  4                        CNN                                 CNN               (7/2/2009 - 9/7/2017)
-    ##  5                        FBC                        FOX Business              (8/20/2012 - 9/7/2017)
-    ##  6                   FOXNEWSW                            FOX News              (7/16/2011 - 9/7/2017)
-    ##  7                      MSNBC                               MSNBC               (7/2/2009 - 9/7/2017)
+    ##  2                  BLOOMBERG                           Bloomberg              (12/5/2013 - 9/9/2017)
+    ##  3                       CNBC                                CNBC               (7/2/2009 - 9/8/2017)
+    ##  4                        CNN                                 CNN               (7/2/2009 - 9/9/2017)
+    ##  5                        FBC                        FOX Business              (8/20/2012 - 9/9/2017)
+    ##  6                   FOXNEWSW                            FOX News              (7/16/2011 - 9/9/2017)
+    ##  7                      MSNBC                               MSNBC               (7/2/2009 - 9/9/2017)
     ##  8              INTERNATIONAL          All International Networks (See individual networks for dates)
-    ##  9                 BBCNEWSSEG                            BBC News               (1/1/2017 - 9/7/2017)
+    ##  9                 BBCNEWSSEG                            BBC News               (1/1/2017 - 9/9/2017)
     ## 10       NATIONALDISCONTINUED  All Discontinued National Networks (See individual networks for dates)
     ## 11                    ALJAZAM                   Aljazeera America             (8/20/2013 - 4/13/2016)
     ## 12                        ALL           All Combined All Networks (See individual networks for dates)
     ## 13                        ALL                                <NA>                                <NA>
     ## 14                  AFFNETALL              All Affiliate Networks (See individual networks for dates)
-    ## 15                 AFFNET_ABC              ABC Affiliate Stations               (7/2/2009 - 9/7/2017)
-    ## 16                 AFFNET_CBS              CBS Affiliate Stations               (7/2/2009 - 9/7/2017)
-    ## 17                 AFFNET_FOX              FOX Affiliate Stations               (7/3/2009 - 9/7/2017)
+    ## 15                 AFFNET_ABC              ABC Affiliate Stations               (7/2/2009 - 9/9/2017)
+    ## 16                 AFFNET_CBS              CBS Affiliate Stations               (7/2/2009 - 9/9/2017)
+    ## 17                 AFFNET_FOX              FOX Affiliate Stations               (7/3/2009 - 9/9/2017)
     ## 18                AFFNET_MYTV             MYTV Affiliate Stations            (12/11/2015 - 12/2/2016)
-    ## 19                 AFFNET_NBC              NBC Affiliate Stations               (7/2/2009 - 9/7/2017)
-    ## 20                 AFFNET_PBS              PBS Affiliate Stations              (7/14/2010 - 9/7/2017)
+    ## 19                 AFFNET_NBC              NBC Affiliate Stations               (7/2/2009 - 9/9/2017)
+    ## 20                 AFFNET_PBS              PBS Affiliate Stations              (7/14/2010 - 9/9/2017)
     ## 21                 AFFMARKALL               All Affiliate Markets (See individual networks for dates)
     ## 22           AFFMARKET_Boston           Boston Affiliate Stations             (9/30/2015 - 12/2/2016)
     ## 23     AFFMARKET_Cedar Rapids     Cedar Rapids Affiliate Stations            (10/19/2015 - 12/2/2016)
@@ -94,13 +95,13 @@ list_networks(widget=FALSE)
     ## 40       AFFMARKET_Newport KY       Newport KY Affiliate Stations              (1/6/2016 - 3/23/2016)
     ## 41          AFFMARKET_Norfolk          Norfolk Affiliate Stations               (1/6/2016 - 3/9/2016)
     ## 42          AFFMARKET_Orlando          Orlando Affiliate Stations              (1/6/2016 - 3/23/2016)
-    ## 43     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations               (6/6/2014 - 9/7/2017)
+    ## 43     AFFMARKET_Philadelphia     Philadelphia Affiliate Stations               (6/6/2014 - 9/9/2017)
     ## 44       AFFMARKET_Portsmouth       Portsmouth Affiliate Stations               (1/6/2016 - 3/9/2016)
     ## 45           AFFMARKET_Pueblo           Pueblo Affiliate Stations              (1/19/2016 - 3/9/2016)
     ## 46          AFFMARKET_Raleigh          Raleigh Affiliate Stations             (1/13/2016 - 12/2/2016)
     ## 47             AFFMARKET_Reno             Reno Affiliate Stations               (1/1/2016 - 3/2/2016)
     ## 48          AFFMARKET_Roanoke          Roanoke Affiliate Stations              (1/26/2016 - 3/1/2016)
-    ## 49    AFFMARKET_San Francisco    San Francisco Affiliate Stations              (7/14/2010 - 9/7/2017)
+    ## 49    AFFMARKET_San Francisco    San Francisco Affiliate Stations              (7/14/2010 - 9/9/2017)
     ## 50   AFFMARKET_Shaker Heights   Shaker Heights Affiliate Stations              (1/6/2016 - 12/2/2016)
     ## 51       AFFMARKET_Sioux City       Sioux City Affiliate Stations             (10/13/2015 - 3/2/2016)
     ## 52   AFFMARKET_St. Petersburg   St. Petersburg Affiliate Stations              (1/6/2016 - 12/2/2016)
@@ -120,9 +121,9 @@ query_tv("clinton", "email", "AFFMARKALL")
     ##   Context keywords: email 
     ##           Stations: AFFMARKALL 
     ##         Start date: 2009-07-02 
-    ##           End date: 2017-09-07 
+    ##           End date: 2017-09-09 
     ## 
-    ## 245,098 timeline results from 82 stations:
+    ## 245,262 timeline results from 82 stations:
     ## 
     ##   +--+--------------------+------------------*-+--------------------+-------------------+------+
     ## 8 +                                          *                                             *   +
@@ -183,7 +184,7 @@ mex <- query_tv("mexican president", filter_network="NATIONAL")
 top_text(mex)
 ```
 
-    ## # A tibble: 200,350 x 4
+    ## # A tibble: 200,233 x 4
     ##    station                    show           show_date         word
     ##      <chr>                   <chr>              <dttm>        <chr>
     ##  1   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00         well
@@ -196,7 +197,7 @@ top_text(mex)
     ##  8   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00     mexico's
     ##  9   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00    president
     ## 10   MSNBC Andrea Mitchell Reports 2017-08-08 16:00:00        tells
-    ## # ... with 200,340 more rows
+    ## # ... with 200,223 more rows
 
 ``` r
 head(top_text(mex, tidy=FALSE))
@@ -259,28 +260,28 @@ The following is dynamically generated from the query results. View the R Markdo
 > "that was part of this. that was a great name, you know. phenomenal. 🍊 people. 🍊 cars."
 
 ``` r
-res <- map(13:15, ~{
-  hr <- .x
-  map(c(0,15,30,45), ~top_trending(hour=hr, minute=.x))
-})
+from <- as.POSIXct("2017-09-08 18:00:00")
+to <- as.POSIXct("2017-09-09 06:00:00")
 
-flatten(res) %>% 
-  discard(is.null) %>% 
-  map_df(~{
-    list(ts=rep(.x$DateGenerated, length(.x$OverallTrendingTopics)), topic=.x$OverallTrendingTopics)
-  }) %>% 
-  count(topic, sort=TRUE) %>% 
-  mutate(topic=factor(topic, levels=rev(topic))) %>% 
-  ggplot(aes(n, topic)) +
-  geom_segment(aes(xend=0, yend=topic), color="#b2b2b2", size=2) +
-  scale_x_comma() +
-  labs(x=NULL, y=NULL, title="Top Topic From 1300-1500 (GMT) 2017-09-07") +
-  theme_ipsum_rc(grid="X")
+tops <- top_trending_range(from, to)
+
+rev(tail(sort(table(unlist(tops$overall_trending_phrases))), 20))
 ```
 
-<img src="README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png" width="768" />
+    ## 
+    ##                storm surge             miles per hour        asked the president               month period 
+    ##                         48                         47                         47                         43 
+    ##              southern part               worst storms            west palm beach           today is the day 
+    ##                         40                         39                         39                         39 
+    ##      thing for your family                storms path          side of the storm        running out of time 
+    ##                         39                         39                         39                         39 
+    ##         ride out the storm        ordered to evacuate   national weather service              love in texas 
+    ##                         39                         39                         39                         39 
+    ##    entire state of florida coverage of hurricane irma             coast to coast            evacuation zone 
+    ##                         39                         39                         39                         37
 
-### Test Results
+Test Results
+------------
 
 ``` r
 library(newsflash)
@@ -289,7 +290,7 @@ library(testthat)
 date()
 ```
 
-    ## [1] "Thu Sep  7 17:11:33 2017"
+    ## [1] "Sat Sep  9 08:41:14 2017"
 
 ``` r
 test_dir("tests/")

@@ -1,5 +1,9 @@
 #' Top Trending Tables
 #'
+#' You likely want to use [top_trending_range()] instead of this as it has a much
+#' friendlier user API. Use this if you want granular control over which times you
+#' are looking for and are willing to do the to/from GMT conversion on your own.
+#'
 #' GDELT now generates a snapshot every 15 minutes that records all of the "top trending"
 #' tables into a single archive enabling users to ook back over time at what was trending
 #' in 15 minute increments historically back to midnight on 2017-09-07.
@@ -15,8 +19,7 @@
 #' the Explorer timeline is based on the broadcast timestamp of the show, even if it is
 #' processed hours later).
 #'
-#' **The time is expected to be GMT for the API and this function will eventually be
-#' modified to auto-convert local timezone to GMT with a parameter.**
+#' **The time is expected to be GMT for the API.**
 #'
 #' @md
 #' @note If an error occurred with the API or transmission, `NULL` is returned.

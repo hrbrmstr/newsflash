@@ -25,11 +25,15 @@ top_trending(ymd = Sys.Date(), hour = 0:23, minute = c(0, 15, 30, 45))
 }
 }
 \description{
+You likely want to use \code{\link[=top_trending_range]{top_trending_range()}} instead of this as it has a much
+friendlier user API. Use this if you want granular control over which times you
+are looking for and are willing to do the to/from GMT conversion on your own.
+}
+\details{
 GDELT now generates a snapshot every 15 minutes that records all of the "top trending"
 tables into a single archive enabling users to ook back over time at what was trending
 in 15 minute increments historically back to midnight on 2017-09-07.
-}
-\details{
+
 Note that the archives are generated every 15 minutes based on the television shows that
 have completed processing at that time. It can take several hours for a show to be fully
 processed by the Internet Archive and available for processing, thus the presence/absence
@@ -41,8 +45,7 @@ run a search on it using the main Television Explorer interface, select a timefr
 the Explorer timeline is based on the broadcast timestamp of the show, even if it is
 processed hours later).
 
-\strong{The time is expected to be GMT for the API and this function will eventually be
-modified to auto-convert local timezone to GMT with a parameter.}
+\strong{The time is expected to be GMT for the API.}
 }
 \note{
 If an error occurred with the API or transmission, \code{NULL} is returned.
