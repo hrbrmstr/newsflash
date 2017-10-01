@@ -45,7 +45,7 @@ readr::cols(
 #' - `channel` (`character`) news channel the chyron appeared on
 #' - `duration` (`integer`) see Description
 #' - `details` (`character`) Internet Archive details path
-#' - `text` (`character`) the cyhron text
+#' - `text` (`character`) the chyron text
 #' @export
 read_chyrons <- function(chyron_day = Sys.Date()-1, cleaned = TRUE) {
 
