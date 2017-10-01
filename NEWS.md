@@ -1,3 +1,6 @@
+0.6.0
+* add functions to work with the Third Eye chyron scraper archive
+
 0.5.0
 * add `top_trending()`
 * add `top_trending_ranged()`

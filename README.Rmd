@@ -6,13 +6,20 @@ editor_options:
 
 `newsflash` : Tools to Work with the Internet Archive and GDELT Television Explorer
 
-Ref: <http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch>
+Ref: 
 
+- <http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch>
+- <https://archive.org/details/third-eye>
+
+TV Explorer:
 >_"In collaboration with the Internet Archive's Television News Archive, GDELT's Television Explorer allows you to keyword search the closed captioning streams of the Archive's 6 years of American television news and explore macro-level trends in how America's television news is shaping the conversation around key societal issues. Unlike the Archive's primary Television News interface, which returns results at the level of an hour or half-hour "show," the interface here reaches inside of those six years of programming and breaks the more than one million shows into individual sentences and counts how many of those sentences contain your keyword of interest. Instead of reporting that CNN had 24 hour-long shows yesterday that mentioned Donald Trump, the interface here will count how many sentences uttered on CNN yesterday mentioned his name - a vastly more accurate metric for assessing media attention."_
 
-An advantage of using this over the interactive selector & downloader is that you get tidy tibbles with this package, ready to use in R.
+Third Eye:
+>_The TV News Archive's Third Eye project captures the chyrons–or narrative text–that appear on the lower third of TV news screens and turns them into downloadable data and a Twitter feed for research, journalism, online tools, and other projects. At project launch (September 2017) we are collecting chyrons from BBC News, CNN, Fox News, and MSNBC–more than four million collected over just two weeks."_
 
-NOTE: While I don't claim that this alpha-package is anywhere near perfect, the IA/GDELT TV API coughs up blood every so often so when there are critical errors run the same query in their web interface before submitting an issue. I kept getting errors when searching all affiliate markets for the "mexican president" query that also generate errors on the web site when JSON is selected as output (it's fine on the web site if the choice is interactive browser visualizations). Submit those errors to them, not here.
+An advantage of using this over the TV Explorer interactive selector & downloader or Third Eye API is that you get tidy tibbles with this package, ready to use in R.
+
+NOTE: While I don't claim that this alpha-package is anywhere near perfect, the IA/GDELT TV API hiccups every so often so when there are critical errors run the same query in their web interface before submitting an issue. I kept getting errors when searching all affiliate markets for the "mexican president" query that also generate errors on the web site when JSON is selected as output (it's fine on the web site if the choice is interactive browser visualizations). Submit those errors to them, not here.
 
 NOTE: As of 2017-01-29 the API is not returning `keyword_primary` in the `query_details` field. It's not an error with this package.
 
@@ -24,6 +31,9 @@ The following functions are implemented:
 - `top_trending`:	Top Trending Tables
 - `top_trending_ranged`:	Top Trending Tables (**you should use this one**)
 - `print.newsflash`: Helper print method for a nicer default text summary
+- `cyclops`:	Retrieve TV News Archive chyrons from the Internet Archive's Third Eye project
+- `list_chyrons`:	Retrieve Third Eye chyron index
+- `view_clip`:	View news segment clips from chyron details frament
 
 ### Installation
 
@@ -39,13 +49,41 @@ options(width=120)
 
 ```{r message=FALSE, warning=FALSE, error=FALSE}
 library(newsflash)
-library(tidyverse)
 library(ggalt)
 library(hrbrthemes)
+library(tidyverse)
 
 # current verison
 packageVersion("newsflash")
 ```
+
+"Third Eye" Chyrons are simpler so we'll start with them first:
+
+```{r fig.width=8, fig.height=5}
+list_chyrons()
+
+ch <- cyclops("2017-09-30")
+
+mutate(
+  ch, 
+  hour = lubridate::hour(ts),
+  text = tolower(text),
+  mention = grepl("erto ri", text)
+) %>% 
+  filter(mention) %>% 
+  count(hour, channel) %>% 
+  ggplot(aes(hour, n)) +
+  geom_segment(aes(xend=hour, yend=0)) +
+  scale_x_continuous(name="Hour (GMT)", breaks=seq(0, 23, 6),
+                     labels=sprintf("%02d:00", seq(0, 23, 6))) +
+  scale_y_continuous(name="# Chyrons", limits=c(0,30)) +
+  facet_wrap(~channel, scales="free") +
+  labs(title="Chyrons mentioning 'Puerto Rico' per hour per channel",
+       caption="Source: Internet Archive Third Eye project & <github.com/hrbrmstr/newsflash>") +
+  theme_ipsum_rc(grid="Y")
+```
+
+Now for the TV Explorer:
 
 See what networks & associated corpus date ranges are available:
 
