@@ -47,7 +47,7 @@ readr::cols(
 #' - `details` (`character`) Internet Archive details path
 #' - `text` (`character`) the cyhron text
 #' @export
-cyclops <- function(chyron_day = Sys.Date()-1, cleaned = TRUE) {
+read_chyrons <- function(chyron_day = Sys.Date()-1, cleaned = TRUE) {
 
   if (length(chyron_day) > 1) {
     message("Can only retrieve one day's archive at a time. Using first value.")

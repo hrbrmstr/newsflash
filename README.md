@@ -24,7 +24,7 @@ The following functions are implemented:
 -   `top_trending`: Top Trending Tables
 -   `top_trending_ranged`: Top Trending Tables (**you should use this one**)
 -   `print.newsflash`: Helper print method for a nicer default text summary
--   `cyclops`: Retrieve TV News Archive chyrons from the Internet Archive's Third Eye project
+-   `read_chyrons`: Retrieve TV News Archive chyrons from the Internet Archive's Third Eye project
 -   `list_chyrons`: Retrieve Third Eye chyron index
 -   `view_clip`: View news segment clips from chyron details frament
 
@@ -74,7 +74,7 @@ list_chyrons()
     ## # ... with 51 more rows
 
 ``` r
-ch <- cyclops("2017-09-30")
+ch <- read_chyrons("2017-09-30")
 
 mutate(
   ch, 
