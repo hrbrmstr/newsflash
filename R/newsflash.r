@@ -81,7 +81,7 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
     } else {
 
       if (!is.null(start_date)) {
-        start_date <- map_chr(start_date, function(x) {
+        start_date <- purrr::map_chr(start_date, function(x) {
           if ((is.character(x) && (x != "")) | inherits(x, "Date")) {
             format(as.Date(x), "%m/%d/%Y")
           } else { 
@@ -91,7 +91,7 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
       }
 
       if (!is.null(end_date)) {
-        end_date <- map_chr(end_date, function(x) {
+        end_date <- purrr::map_chr(end_date, function(x) {
           if ((is.character(x) && (x != "")) | inherits(x, "Date")) {
             format(as.Date(x), "%m/%d/%Y")
           } else {
