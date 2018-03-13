@@ -4,19 +4,19 @@
 \alias{query_tv}
 \title{Issue a query to the TV Explorer}
 \usage{
-query_tv(primary_keyword, context_keywords = NULL,
-  filter_network = "NATIONAL", timespan = "ALL", start_date = NULL,
-  end_date = NULL)
+query_tv(query, context = NULL, network = "National", timespan = "ALL",
+  start_date = NULL, end_date = NULL, timelinesmooth = 0,
+  datacomb = "separate")
 }
 \arguments{
-\item{primary_keyword}{primary keyword}
+\item{query}{primary keyword}
 
-\item{context_keywords}{context keywords (optional, but see web site for details on
-why this is a useful parameter)}
+\item{context}{context keywords, with separate keywords in list format 
+(optional, but see web site for details on why this is a useful parameter)}
 
-\item{filter_network}{filter by network. Use \code{list_networks()} to see valid values
+\item{network}{filter by network. Use \code{list_networks()} to see valid values
 and to get a hint about valid date ranges for \code{start_date} and \code{end_date}.
-Defaults to \code{NATIONAL}.}
+Defaults to \code{national}.}
 
 \item{timespan}{if "\code{all}" (the default) all possible timeline data will be returned
 (there is a max number of timeline results and that limit is changing regularly enough
@@ -26,6 +26,11 @@ must specify \code{start_date} and \code{end_date}.}
 \item{start_date, end_date}{start/end dates for search if \code{timespan} is
 not "\code{all}". Can be a \code{Date} object or an ISO character date (e.g. \code{2016-11-12}).
 Use "" (empty string) for most current date.}
+
+\item{timelinesmooth}{a smoothing value applying moving averages over 15-minute increments}
+
+\item{datacomb}{if "\code{combined}", all network volume is combined into a single value.
+Defaults to "\code{separate}".}
 }
 \description{
 Successful queries (API errors tend to be date-range related but there
@@ -50,7 +55,8 @@ See the Reference URL for more detailed parameter info.
 
 Queries resulting in no matches will display a message and return \code{NULL} invisibly.
 
-Both query fields support "OR" queries by separating query keywords with a comma ("\code{,}").
+Both query fields support "OR" queries by including search terms in a list (e.g., 
+query_tv(query = c("Trump", "Obama")).
 
 There is a maximum of 2,500 results per query. If you need to return more results than
 this, split your query time frame up into multiple smaller date ranges (ie, if your query
@@ -68,5 +74,5 @@ query_tv("british prime minister")
 query_tv("mexican president")
 }
 \references{
-\url{http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch}
+\url{https://blog.gdeltproject.org/gdelt-2-0-television-api-debuts/}
 }
