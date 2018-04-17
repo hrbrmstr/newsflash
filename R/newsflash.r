@@ -1,18 +1,23 @@
-nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNEWSW",
-                "MSNBC", "INTERNATIONAL", "BBCNEWSSEG", "AFFNETALL", "AFFNET_ABC",
-                "AFFNET_CBS", "AFFNET_FOX", "AFFNET_MYTV", "AFFNET_NBC", "AFFNET_PBS",
-                "AFFMARKALL", "AFFMARKET_Boston", "AFFMARKET_Cedar Rapids",
-                "AFFMARKET_Charlotte", "AFFMARKET_Cincinnati", "AFFMARKET_Cleveland",
-                "AFFMARKET_Colorado Springs", "AFFMARKET_Columbia", "AFFMARKET_Dakota Dunes SD",
-                "AFFMARKET_Daytona Beach", "AFFMARKET_Denver", "AFFMARKET_Des Moines",
-                "AFFMARKET_Durham", "AFFMARKET_Goldsboro", "AFFMARKET_Greenville",
-                "AFFMARKET_Hampton", "AFFMARKET_Las Vegas", "AFFMARKET_Lynchburg",
-                "AFFMARKET_Miami", "AFFMARKET_Newport KY", "AFFMARKET_Norfolk",
-                "AFFMARKET_Orlando", "AFFMARKET_Philadelphia", "AFFMARKET_Portsmouth",
-                "AFFMARKET_Pueblo", "AFFMARKET_Raleigh", "AFFMARKET_Reno",
-                "AFFMARKET_Roanoke", "AFFMARKET_San Francisco", "AFFMARKET_Shaker Heights",
-                "AFFMARKET_Sioux City", "AFFMARKET_Tampa", "AFFMARKET_Virginia Beach",
-                "AFFMARKET_Washington DC", "AFFMARKET_Waterloo")
+nf_markets <- c("National", "International", "Japan",
+                "Ames", "Arlington Virginia", "Asheville", "Baltimore",
+                "Belmont", "Boston", "Cedar Rapids", "Charlotte", "Chicago",
+                "Cincinnati", "Cleveland", "Colorado Springs", "Columbia", 
+                "Costa Mesa California", "Dakota Dunes SD", "Daytona Beach", 
+                "Denver", "Des Moines", "Durham", "Goldsboro", "Greenville",
+                "Hampton", "Lake Shore Maryland", "Las Vegas", "Lynchburg",
+                "Maryland", "Miami", "Milwaukee", "New York City", "Newport KY", 
+                "Norfolk", "Orlando", "Philadelphia", "Phoenix", "Portsmouth",
+                "Pueblo", "Raleigh", "Reno", "Roanoke", "San Francisco", 
+                "San Mateo California", "Shaker Heights", "Sioux City",
+                "Sonoma California", "Spartanburg", "St. Petersburg", "Tampa", 
+                "Toledo", "Virginia Beach", "Washington DC", "Waterloo")
+
+nf_networks <- c("ALJAZ", "ALJAZAM", "BBCNEWS", "BET", "BLOOMBERG", "CNBC", "CNN",        
+                 "COM", "CSPAN", "CurrentTV", "DW", "FBC", "FOXNEWS", "HLN", "CW", 
+                 "ABC", "CBS", "SonLife", "PBS", "FOX", "Univision", "UniMas",        
+                 "IonTV", "NBC", "MyNetworkTV", "MYTV", "Telemundo", "KTLN", 
+                 "EstrellaTV", "LINKTV", "MSNBC", "NHK", "RT", "Trinity", "Daystar",
+                 "Azteca")
 
 #' Issue a query to the TV Explorer
 #'
@@ -36,7 +41,8 @@ nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNE
 #'
 #' Queries resulting in no matches will display a message and return \code{NULL} invisibly.
 #'
-#' Both query fields support "OR" queries by separating query keywords with a comma ("\code{,}").
+#' Both query fields support "OR" queries by including search terms in a list (e.g., 
+#' query_tv(query = c("Trump", "Obama")).
 #'
 #' There is a maximum of 2,500 results per query. If you need to return more results than
 #' this, split your query time frame up into multiple smaller date ranges (ie, if your query
@@ -47,12 +53,12 @@ nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNE
 #' coverage of a topic changed over the course of a day and when each network first started
 #' discussing it.
 #'
-#' @param primary_keyword primary keyword
-#' @param context_keywords context keywords (optional, but see web site for details on
-#'    why this is a useful parameter)
-#' @param filter_network filter by network. Use \code{list_networks()} to see valid values
+#' @param query primary keyword
+#' @param context context keywords, with separate keywords in list format 
+#'    (optional, but see web site for details on why this is a useful parameter)
+#' @param network filter by network. Use \code{list_networks()} to see valid values
 #'    and to get a hint about valid date ranges for \code{start_date} and \code{end_date}.
-#'    Defaults to \code{NATIONAL}.
+#'    Defaults to \code{national}.
 #' @param timespan if "\code{all}" (the default) all possible timeline data will be returned
 #'    (there is a max number of timeline results and that limit is changing regularly enough
 #'    that you need to check the site to know what it is). If not "\code{all}" then you
@@ -60,17 +66,50 @@ nf_markets <- c("NATIONAL", "ALJAZAM", "BLOOMBERG", "CNBC", "CNN", "FBC", "FOXNE
 #' @param start_date,end_date start/end dates for search if \code{timespan} is
 #'    not "\code{all}". Can be a \code{Date} object or an ISO character date (e.g. \code{2016-11-12}).
 #'    Use "" (empty string) for most current date.
-#' @references \url{http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch}
+#' @param timelinesmooth a smoothing value applying moving averages over 15-minute increments
+#' @param datacomb if "\code{combined}", all network volume is combined into a single value.
+#'    Defaults to "\code{separate}".
+#' @references \url{https://blog.gdeltproject.org/gdelt-2-0-television-api-debuts/}
 #' @export
 #' @examples
 #' query_tv("terror", "isis")
 #' query_tv("british prime minister")
 #' query_tv("mexican president")
-query_tv <- function(primary_keyword, context_keywords=NULL,
-                     filter_network = "NATIONAL",
-                     timespan="ALL",
-                     start_date=NULL, end_date=NULL) {
+query_tv <- function(query, 
+                     context=NULL,
+                     network = "National",
+                     timespan = "ALL",
+                     start_date = NULL, 
+                     end_date = NULL,
+                     timelinesmooth = 0,
+                     datacomb = "separate") {
 
+  # check if network or market specified
+  news_source <- network[which(network %in% nf_networks)]
+  
+  if (length(news_source) > 0) {
+      
+    # construct the query string
+    source_string <- sprintf("(%s)", paste0("Network:", news_source, sep = "", collapse = " OR "))
+  
+  # length zero, check for market match    
+  } else {
+    
+    news_source <- network[which(network %in% nf_markets)]
+    
+    if (length(news_source) > 0) {
+      
+      source_string <- sprintf("(%s)", paste0("market:\"", news_source, "\"", sep = "", collapse = " OR "))
+
+    # specified networks/markets not in any list, default to national  
+    } else {
+      message("Networks not in allowed list. Defaulting to 'National'.")
+      source_string <- "market:\"National\""
+    } 
+    
+  } 
+
+    
   if (is.null(timespan) || (tolower(timespan) != "all")) {
 
     if (is.null(start_date) & is.null(end_date)) {
@@ -81,9 +120,13 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
     } else {
 
       if (!is.null(start_date)) {
+        
+        # add warning message about timespans < 7 days (no times included in json currently)
+        message("Warning: Date ranges of 7 days or less currently do not receive timestamps from the server")
+        
         start_date <- purrr::map_chr(start_date, function(x) {
           if ((is.character(x) && (x != "")) | inherits(x, "Date")) {
-            format(as.Date(x), "%m/%d/%Y")
+            paste(format(as.Date(x), "%Y%m%d"), "000000", sep = "")
           } else { 
             x
           }
@@ -93,7 +136,7 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
       if (!is.null(end_date)) {
         end_date <- purrr::map_chr(end_date, function(x) {
           if ((is.character(x) && (x != "")) | inherits(x, "Date")) {
-            format(as.Date(x), "%m/%d/%Y")
+            paste(format(as.Date(x), "%Y%m%d"), "230000", sep = "")
           } else {
             x
           }
@@ -104,66 +147,65 @@ query_tv <- function(primary_keyword, context_keywords=NULL,
 
   }
 
-  filter_network <- match.arg(filter_network, nf_markets)
+  # check for context keywords and format appropriately
+  if (!is.null(context)) {
+    
+    # if context length > 1, add parantheses around query
+    if (length(context) > 1) {
+      context <- sprintf("(%s)", paste0("context:\"", context, "\"", sep = "", collapse = " OR "))
+    } else {
+      context <- paste0("context:\"", context, "\"", sep = "")
+    }
+    
+  }
 
   query <- list(
-    primary_keyword = gsub(" ", "+", primary_keyword),
-    context_keywords = context_keywords %||% "",
-    filter_network = filter_network,
-    filter_displayas = "RAW",
-    filter_combineseparate = "SEPARATE",
-    filter_outputtype = "JSON"
+    # paste together query, news source, and context keywords
+    query = URLencode(paste(gsub(" ", "+", query), source_string, context, sep = " ")),
+    datacomb = datacomb,
+    mode = "timelinevol",
+    datanorm = "perc",
+    format = "json",
+    timelinesmooth = timelinesmooth
   )
-
-  query$context_keywords <- gsub(" ", "+", query$context_keywords)
 
   if (!is.null(timespan) && tolower(timespan) == "all") {
     query$filter_timespan <- "ALL"
   } else {
     query$filter_timespan <- "CUSTOM"
-    query$filter_timespan_custom_start <- start_date
-    query$filter_timespan_custom_end <- end_date
+    query$STARTDATETIME <- start_date
+    query$ENDDATETIME <- end_date
   }
 
-  URL <- "http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch"
+  URL <- "https://api.gdeltproject.org/api/v2/tv/tv"
   URL <- sprintf("%s?%s", URL, paste0(sprintf("%s=%s", names(query), unlist(query)), collapse="&"))
-
-  res <- curl_fetch_memory(URL)
+  
+  res <- httr::GET(URL)
 
   if (!(res$status_code < 300)) {
     stop(sprintf("[%s] Query or API error on request [%s]", res$status_code, URL), call.=FALSE)
   }
 
-  res$content <- res$content[res$content != as.raw(0x00)]
-  res$content <- rawToChar(res$content)
-  res$content <- stri_replace_all_regex(res$content, "\\\\([[:alpha:] ]+)", "$1")
+  res$content <- httr::content(res)
 
-  out <- jsonlite::fromJSON(res$content)
-  # rc <- rawConnection(res$content)
-  # out <- jsonlite::fromJSON(rc)
-  # close(rc)
+  res$timeline <- tibble::data_frame(
+      network = res$content$timeline %>%
+        purrr::map_chr("series"),
+      data = res$content$timeline %>%
+        purrr::map("data")) %>%
+    tidyr::unnest(data) %>%
+    dplyr::mutate(
+      date = data %>%
+        purrr::map_chr("date") %>%
+        # hourly data doesn't have times - API doesn't return time values - split off non-hms data from date-time
+        sapply(., function(x) strsplit(x, "T")[[1]][1]) %>%
+        lubridate::ymd(),
+      value = data %>%
+        purrr::map_dbl("value")
+    ) %>%
+    dplyr::select(-data)
 
-  if (length(out) == 1) {
-    message("No results found")
-    return(invisible(NULL))
-  }
-
-  res <- out
-  res$query_details <- dplyr::tbl_df(res$query_details)
-
-  res$timeline <- tidyr::unnest(res$timeline, station_values) %>%
-    dplyr::mutate(date_start=lubridate::ymd_hms(date_start),
-                  date_end=lubridate::ymd_hms(date_end)) %>%
-    dplyr::tbl_df()
-
-  res$station_histogram <- dplyr::tbl_df(res$station_histogram)
-
-  res$top_matches <- dplyr::tbl_df(res$top_matches) %>%
-    dplyr::mutate(date=lubridate::ymd_hms(date),
-                  show_date=lubridate::ymd_hms(show_date))
-
-  class(res) <- c("newsflash", class(res))
-
+  # return results
   res
-
+  
 }
