@@ -6,6 +6,13 @@
 \usage{
 list_networks(widget = interactive())
 }
+\arguments{
+\item{widget}{if `TRUE` then an HTML widget will be displayed to make it easier to
+sift through stations/networks}
+}
+\value{
+data frame
+}
 \description{
 The \code{filter_network} of \code{query_tv()} is picky so this helps you idenitify the
 keyword to use for the particular network/station.
@@ -19,5 +26,5 @@ the console by passing in \code{widget=FALSE}
 }
 \examples{
 list_networks() # widget
-list_networks(FALSE) # console
+print(list_networks(FALSE)) # no widget
 }

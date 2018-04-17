@@ -1,5 +1,5 @@
-context("basic functionality")
-test_that("we can do something", {
+context("API functionality")
+test_that("API functionality", {
 
   #expect_that(some_function(), is_a("data.frame"))
 
