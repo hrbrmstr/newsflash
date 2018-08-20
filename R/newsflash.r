@@ -124,8 +124,8 @@ query_tv <- function(query,
         date = data %>%
           purrr::map_chr("date") %>%
           # hourly data doesn't have times - API doesn't return time values - split off non-hms data from date-time
-          sapply(., function(x) strsplit(x, "T")[[1]][1]) %>%
-          lubridate::ymd(),
+          #sapply(., function(x) strsplit(x, "T")[[1]][1]) %>%
+          lubridate::ymd_hms(),
         value = data %>%purrr::map_dbl("value")
       ) %>%
       dplyr::select(-data)
