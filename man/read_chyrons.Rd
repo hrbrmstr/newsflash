@@ -25,7 +25,7 @@ relies on algorithms that are a work in progress.}
 \item \code{channel} (\code{character}) news channel the chyron appeared on
 \item \code{duration} (\code{integer}) see Description
 \item \code{details} (\code{character}) Internet Archive details path
-\item \code{text} (\code{character}) the cyhron text
+\item \code{text} (\code{character}) the chyron text
 }
 }
 \description{

@@ -1,4 +1,4 @@
-#' Top Trending Tables (Ranged)
+#' Top Trending Topics (Internet Archive TV Archive)
 #'
 #' Provide start & end times in current time zone and this function will generate
 #' the proper "every 15-second" values, convert them to GMT values and issue the queries,
@@ -20,16 +20,16 @@
 #' processed hours later).
 #'
 #' @md
-#' @param from,to start and end `POSIXct` values in **current** time zone.
+#' @param from,to start and end date/time ranges (will auto-convert if properly formatted strings)
 #' @param .progress show a progress bar? Defaukts to `TRUE` if in an interactive session.
+#' @note The times are auto-converted to GMT
 #' @export
 #' @examples
-#' # This gets the from/to times in current time zone
-#' from <- as.POSIXct("2017-09-08 18:00:00")
-#' to <- as.POSIXct("2017-09-09 06:00:00")
-#'
-#' top_trending_range(from, to)
-top_trending_range <-  function(from, to, .progress=interactive()) {
+#' top_trending("2017-09-08 18:00", "2017-09-09 06:00")
+iatv_top_trending <-  function(from, to, .progress=interactive()) {
+
+  from <- anytime::anytime(from)
+  to <- anytime::anytime(to)
 
   base_url <- "http://data.gdeltproject.org/gdeltv3/iatv_trending/%s.tvtrending.v3.15min.json"
 

@@ -4,7 +4,13 @@ editor_options:
   chunk_output_type: console
 ---
 
-`newsflash` : Tools to Work with the Internet Archive and GDELT Television Explorer
+*** BREAKING CHANGES ***
+
+# newsflash
+
+Tools to Work with the Internet Archive and GDELT Television Explorer
+
+## Description
 
 Ref: 
 
@@ -21,21 +27,20 @@ An advantage of using this over the TV Explorer interactive selector & downloade
 
 NOTE: While I don't claim that this alpha-package is anywhere near perfect, the IA/GDELT TV API hiccups every so often so when there are critical errors run the same query in their web interface before submitting an issue. I kept getting errors when searching all affiliate markets for the "mexican president" query that also generate errors on the web site when JSON is selected as output (it's fine on the web site if the choice is interactive browser visualizations). Submit those errors to them, not here.
 
-NOTE: As of 2017-01-29 the API is not returning `keyword_primary` in the `query_details` field. It's not an error with this package.
+## What's Inside The Tin
 
 The following functions are implemented:
 
-- `query_tv`:	Issue a query to the TV Explorer
-- `top_text`: Helper function to extract the text snippets from the top matches as a tidytext-compatible tibble or plain character vector
-- `list_networks`:	Helper function to identify station/network keyword and corpus date range for said market
-- `top_trending`:	Top Trending Tables
-- `top_trending_ranged`:	Top Trending Tables (**you should use this one**)
-- `print.newsflash`: Helper print method for a nicer default text summary
-- `read_chyrons`:	Retrieve TV News Archive chyrons from the Internet Archive's Third Eye project
 - `list_chyrons`:	Retrieve Third Eye chyron index
-- `view_clip`:	View news segment clips from chyron details frament
+- `list_networks`:	Helper function to identify station/network keyword and corpus date range for said market
+- `newsflash`:	Tools to Work with the Internet Archive and GDELT Television Explorer
+- `query_tv`:	Issue a query to the TV Explorer
+- `read_chyrons`:	Retrieve TV News Archive chyrons from the Internet Archive's Third Eye project
+- `gd_top_trending`:	Top Trending (GDELT)
+- `iatv_top_trending:	Top Trending Topics (Internet Archive TV Archive)
+- `word_cloud`:	Retrieve top words that appear most frequently in clips matching your search
 
-### Installation
+## Installation
 
 ```{r eval=FALSE}
 devtools::install_github("hrbrmstr/newsflash")
@@ -45,7 +50,7 @@ devtools::install_github("hrbrmstr/newsflash")
 options(width=120)
 ```
 
-### Usage
+## Usage
 
 ```{r message=FALSE, warning=FALSE, error=FALSE}
 library(newsflash)
@@ -57,117 +62,112 @@ library(tidyverse)
 packageVersion("newsflash")
 ```
 
-"Third Eye" Chyrons are simpler so we'll start with them first:
+### "Third Eye" Chyrons are simpler so we'll start with them first:
 
-```{r fig.width=8, fig.height=5}
+```{r fig.width=8, fig.height=5, cache=TRUE}
 list_chyrons()
 
-ch <- read_chyrons("2017-09-30")
+ch <- read_chyrons("2018-04-13")
 
 mutate(
   ch, 
   hour = lubridate::hour(ts),
   text = tolower(text),
-  mention = grepl("erto ri", text)
+  mention = grepl("comey", text)
 ) %>% 
   filter(mention) %>% 
   count(hour, channel) %>% 
   ggplot(aes(hour, n)) +
-  geom_segment(aes(xend=hour, yend=0)) +
+  geom_segment(aes(xend=hour, yend=0), color = "lightslategray", size=1) +
   scale_x_continuous(name="Hour (GMT)", breaks=seq(0, 23, 6),
                      labels=sprintf("%02d:00", seq(0, 23, 6))) +
-  scale_y_continuous(name="# Chyrons", limits=c(0,30)) +
+  scale_y_continuous(name="# Chyrons", limits=c(0,20)) +
   facet_wrap(~channel, scales="free") +
-  labs(title="Chyrons mentioning 'Puerto Rico' per hour per channel",
+  labs(title="Chyrons mentioning 'Comey' per hour per channel",
        caption="Source: Internet Archive Third Eye project & <github.com/hrbrmstr/newsflash>") +
   theme_ipsum_rc(grid="Y")
 ```
 
-Now for the TV Explorer:
+## Now for the TV Explorer:
 
-See what networks & associated corpus date ranges are available:
+### See what networks & associated corpus date ranges are available:
 
 ```{r}
 list_networks(widget=FALSE)
 ```
 
-Basic search:
+### Basic search:
 
-```{r}
-query_tv("clinton", "email", "AFFMARKALL")
-```
+```{r fig.width=8, fig.height=7, cache=TRUE}
+comey <- query_tv('comey', start_date = "2018-04-01")
 
-The closed-caption text snippets are returned for the "top matches" (usually max 2,500 for a broad enough search) and you can extract them from the object directly with `x$top_matches$snippet` or use `top_text(x)`:
+comey
 
-```{r}
-mex <- query_tv("mexican president", filter_network="NATIONAL")
-top_text(mex)
-```
-
-```{r}
-head(top_text(mex, tidy=FALSE))
-```
-
-You can, of course, do other things with the various bits of data returned:
-
-```{r}
-orange <- query_tv("trump")
-```
-
-```{r fig.height=2.75, fig.retina=2}
-arrange(orange$station_histogram, value) %>% 
-  mutate(station=factor(station, levels=station)) %>% 
-  ggplot(aes(value, station)) +
-  geom_lollipop(horizontal=TRUE, size=0.75,
-                color=ggthemes::tableau_color_pal()(10)[2]) +
-  scale_x_continuous(expand=c(0,0), label=scales::comma, limits=c(0,400000)) +
-  labs(y=NULL, x="# Mentions",
-       title="Station Histogram") +
-  theme_ipsum_rc(grid="X")
-```
-
-```{r warning=FALSE, message=FALSE, fig.height=6, fig.retina=2}
-mutate(orange$timeline, date_start=as.Date(date_start)) %>% 
-  filter(date_start >= as.Date("2015-01-01")) %>% 
-  ggplot(aes(date_start, value)) +
-  geom_area(aes(group=station, fill=station), position="stack") +
-  scale_x_date(name=NULL, expand=c(0,0)) +
-  scale_y_continuous(name="# Mentions", label=scales::comma, limits=c(0, 8000), expand=c(0,0)) +
-  ggthemes::scale_fill_tableau(name=NULL) +
-  labs(title="Timeline") +
+query_tv('comey', start_date = "2018-04-01") %>% 
+  arrange(date) %>% 
+  ggplot(aes(date, value, group=network)) +
+  ggalt::geom_xspline(aes(color=network)) +
+  ggthemes::scale_color_tableau(name=NULL) +
+  labs(x=NULL, y="Volume Metric", title="'Comey' Trends Across National Networks") +
+  facet_wrap(~network) +
   theme_ipsum_rc(grid="XY") +
-  theme(legend.position="bottom") +
-  theme(axis.text.x=element_text(hjust=c(0, 0.5, 0.5, 0.5, 0.5, 0.5)))
+  theme(legend.position="none")
 ```
 
-The following is dynamically generated from the query results. View the R Markdown to see the code.
-
-#### `r orange$top_matches$station[10]` / `r orange$top_matches$show[10]`
-
-<`r orange$top_matches$preview_url[10]`>
-
-`r htmltools::HTML(sprintf("<img src='%s'/>", orange$top_matches$preview_thumb[10]))`
-
->"`r gsub('trump', '🍊', orange$top_matches$snippet[10], ignore.case=TRUE)`"
-
-```{r warning=FALSE, message=FALSE, fig.height=9.5, fig.width=8, fig.retina=2}
-from <- as.POSIXct("2017-09-08 18:00:00")
-to <- as.POSIXct("2017-09-09 06:00:00")
-
-tops <- top_trending_range(from, to)
-
-rev(tail(sort(table(unlist(tops$overall_trending_phrases))), 20))
+```{r cache=TRUE}
+query_tv("comey Network:CNN", mode = "TimelineVol", start_date = "2018-01-01") %>% 
+  arrange(date) %>% 
+  ggplot(aes(date, value, group=network)) +
+  ggalt::geom_xspline(color="lightslategray") +
+  ggthemes::scale_color_tableau(name=NULL) +
+  labs(x=NULL, y="Volume Metric", title="'Comey' Trend on CNN") +
+  theme_ipsum_rc(grid="XY")
 ```
 
+### Relative Network Attention To Syria since January 1, 2018
 
-## Test Results
-
-```{r message=FALSE, warning=FALSE, error=FALSE}
-library(newsflash)
-library(testthat)
-
-date()
-
-test_dir("tests/")
+```{r cache=TRUE}
+query_tv('syria Market:"National"', mode = "StationChart", start_date = "2018-01-01") %>% 
+  arrange(desc(count)) %>% 
+  knitr::kable("markdown")
 ```
 
+### Video Clips
+
+```{r cache=TRUE}
+clips <- query_tv('comey Market:"National"', mode = "ClipGallery", start_date = "2018-01-01")
+
+clips
+```
+
+`r clips$show_date[1]` | `r clips$station[1]` | `r clips$show[1]`
+
+<a href="`r clips$preview_url[1]`"><img src="`r clips$preview_thumb[1]`"></a>
+
+`r clips$snippet[1]`
+
+### "Word Cloud" (top associated words to the query)
+
+```{r fig.height=8, fig.width=8, cache=TRUE}
+wc <- query_tv('hannity Market:"National"', mode = "WordCloud", start_date = "2018-04-13")
+
+ggplot(wc, aes(x=1, y=1)) +
+  ggrepel::geom_label_repel(aes(label=label, size=count), segment.colour="#00000000", segment.size=0) +
+  scale_size_continuous(trans="sqrt") +
+  labs(x=NULL, y=NULL) +
+  theme_ipsum_rc(grid="") +
+  theme(axis.text=element_blank()) +
+  theme(legend.position="none") 
+```
+
+### Last 15 Minutes Top Trending
+
+```{r}
+gd_top_trending()
+```
+
+### Top Overall Trending from the Internet Archive TV Archive (2017 and earlier)
+
+```{r}
+iatv_top_trending("2017-12-01 18:00", "2017-12-02 06:00")
+```

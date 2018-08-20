@@ -10,22 +10,25 @@
 #' the console by passing in \code{widget=FALSE}
 #'
 #' @export
+#' @param widget if `TRUE` then an HTML widget will be displayed to make it easier to
+#'        sift through stations/networks
+#' @return data frame
 #' @examples
 #' list_networks() # widget
-#' list_networks(FALSE) # console
-list_networks <- function(widget=interactive()) {
+#' print(list_networks(FALSE)) # no widget
+list_networks <- function(widget = interactive()) {
 
-  xml2::read_html("http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch") %>%
-    rvest::html_nodes("select[name='filter_network'] > option") -> networks
+  xdf <- jsonlite::fromJSON("https://api.gdeltproject.org/api/v2/tv/tv?mode=stationdetails&format=json")
 
-  detail_text <- rvest::html_text(networks) %>% gsub("=*> (.*)", "All \\1 (See individual networks for dates)", .)
+  xdf$station_details %>%
+  mutate(StartDate = as.Date(anytime::anytime(StartDate))) %>%
+    mutate(EndDate = as.Date(anytime::anytime(StartDate))) -> xdf
 
-  stri_match_all_regex(detail_text, "(.*) (\\(.*\\))") %>%
-    map_df(~tbl_df(setNames(as.list(.[,2:3]), c("network", "date_range")))) %>%
-    mutate(keyword=rvest::html_attr(networks, "value")) %>%
-    select(keyword, network, date_range) -> df
+  if (widget) DT::datatable(xdf)
 
-  if (widget) DT::datatable(df) else print(df, n=nrow(df))
+  class(xdf) <- c("tbl_df", "tbl", "data.frame")
+
+  xdf
 
 }
 

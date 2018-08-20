@@ -5,10 +5,12 @@ Version: 0.6.0
 Date: 2017-10-01
 Author: Bob Rudis (bob@rud.is)
 Authors@R: c(
-      person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")),
+      person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
+           comment = c(ORCID = "0000-0001-5670-2640")),
       person("Abe", "Neuwirth", role = c("ctb")),
       person("Mike", "Gruszczynski", role = c("ctb"))
     )
+Encoding: UTF-8
 Maintainer: Bob Rudis <bob@rud.is>
 Description: The 'GDELT' Television Explorer (<http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch>) 
     provides a simple and straighforward interface for searching through current and historical
@@ -38,4 +40,4 @@ Imports:
     txtplot,
     readr,
     utils
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
