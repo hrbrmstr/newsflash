@@ -13,7 +13,9 @@ Ref:
   - <http://television.gdeltproject.org/cgi-bin/iatv_ftxtsearch/iatv_ftxtsearch>
   - <https://archive.org/details/third-eye>
 
-TV Explorer: \>\_“In collaboration with the Internet Archive’s
+TV Explorer: 
+
+>_“In collaboration with the Internet Archive’s
 Television News Archive, GDELT’s Television Explorer allows you to
 keyword search the closed captioning streams of the Archive’s 6 years of
 American television news and explore macro-level trends in how America’s
@@ -26,15 +28,17 @@ those sentences contain your keyword of interest. Instead of reporting
 that CNN had 24 hour-long shows yesterday that mentioned Donald Trump,
 the interface here will count how many sentences uttered on CNN
 yesterday mentioned his name - a vastly more accurate metric for
-assessing media attention.“\_
+assessing media attention.“_
 
-Third Eye: \>\_The TV News Archive’s Third Eye project captures the
+Third Eye: 
+
+>_The TV News Archive’s Third Eye project captures the
 chyrons–or narrative text–that appear on the lower third of TV news
 screens and turns them into downloadable data and a Twitter feed for
 research, journalism, online tools, and other projects. At project
 launch (September 2017) we are collecting chyrons from BBC News, CNN,
 Fox News, and MSNBC–more than four million collected over just two
-weeks.“\_
+weeks.“_
 
 An advantage of using this over the TV Explorer interactive selector &
 downloader or Third Eye API is that you get tidy tibbles with this
